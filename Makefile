@@ -2,9 +2,9 @@ CC = gcc
 SRC_PATH = sources/
 DEBUG = -g
 
-all: MAIN_T LSM_T SLE_T
+all: MAIN_T LSM_T SLE_T GNUPLOT_T
 	./bash_scripts/mkdir.sh data
-	$(CC) $(DEBUG) temps/main.o temps/lsm.o temps/SLE.o -lm -o run
+	$(CC) $(DEBUG) temps/main.o temps/lsm.o temps/SLE.o temps/gnuplot.o -lm -o run
 	rm -rf temps
 MAIN_T:
 	./bash_scripts/mkdir.sh temps
@@ -13,6 +13,8 @@ LSM_T:
 	$(CC) -c $(DEBUG) $(SRC_PATH)lsm/lsm.c -o temps/lsm.o
 SLE_T:
 	$(CC) -c $(DEBUG) $(SRC_PATH)SLE/SLE.c -o temps/SLE.o
+GNUPLOT_T:
+	$(CC) -c $(DEBUG) $(SRC_PATH)gnuplot/gnuplot.c -o temps/gnuplot.o
 clean:
 	rm -rf *.o *.out temps run
 clean_data:

@@ -1,6 +1,7 @@
 
 
-struct lsm_linear {
+struct lsm_linear
+{
     int     N;
     double* x;
     double* y;
@@ -10,22 +11,40 @@ struct lsm_linear {
     double  bd;
 };
 
-
-struct input {
+struct input
+{
     int N;
     double *x;
     double *y;
 };
 
-struct lsm_pol {
-    int N;
+struct lsm_pol
+{
     double *x;
     double *y;
     double *a;
+    int N;
+    int deg;
 };
 
 
 typedef struct lsm_linear lsm_exp;
+
+enum type { LINEAR, EXPONENTIAL, POLINOMIAL };
+
+struct lsm_t
+{
+    union 
+    {
+        struct lsm_linear *LINE;
+        struct lsm_pol    *POL;
+        lsm_exp *EXP;
+    } U;
+    enum type type;
+};
+
+
+
 
 double Sum      (double* a, int N);
 double SumMul   (double* a, double* b, int N);

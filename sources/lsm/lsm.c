@@ -1,10 +1,15 @@
-#include "lsm.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <assert.h>
 #include <math.h>
+#include "lsm.h"
+#include "../gnuplot/gnuplot.h"
 #include "../SLE/SLE.h"
+
+
+#define MAX_STR_SIZE 256
+
 
 lsm_exp *ExpCalc (struct input *INP);
 
@@ -123,16 +128,32 @@ void LinearLsmCalc (char *inputname, char *outname)
     struct input *INP = Input(inputname);
 
     struct lsm_linear *LINE = LinearCalc (INP);
+    free (INP->x);
+    free (INP->y);
+    free (INP);
+
+    char *script_name = calloc (MAX_STR_SIZE, sizeof(char));
+    char *picture_name = calloc (MAX_STR_SIZE, sizeof(char));
+
+    strcat (script_name, outname);
+    strcat (script_name, ".sh");
+
+    strcat (picture_name, outname);
+    strcat (picture_name, ".png");
 
     LsmPrint (LINE, outname);
+    struct lsm_t *LSM = calloc (1, sizeof (struct lsm_t));
+    LSM->type = LINEAR;
+    LSM->U.LINE = LINE;
+    gnuplot (script_name, picture_name, "graph", "x", "y", LSM);
+    
+    free (script_name);
+    free (picture_name);
+    free (LSM);
 
     free (LINE->x);
     free (LINE->y);
     free (LINE);
-
-    free (INP->x);
-    free (INP->y);
-    free (INP);
 }
 
 //==================================================================================================
@@ -228,7 +249,7 @@ void ExpLsmCalc (char *inputname, char *outname)
 //============================================OUTPUT================================================
 //==================================================================================================
 
-#define MAX_STR_SIZE 256
+
 void LsmPrint (struct lsm_linear* LINE, char *outname)
 {
     //===================for_prog====================
@@ -389,3 +410,4 @@ void ExpLsmPrint (lsm_exp *EXP, char *outname)
 
     fclose (out);
 }
+#undef MAX_STR_SIZE
