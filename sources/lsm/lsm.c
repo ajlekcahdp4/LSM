@@ -228,10 +228,38 @@ void ExpLsmCalc (char *inputname, char *outname)
 //============================================OUTPUT================================================
 //==================================================================================================
 
-
+#define MAX_STR_SIZE 256
 void LsmPrint (struct lsm_linear* LINE, char *outname)
 {
+    //===================for_prog====================
+    char *datafilename = calloc (MAX_STR_SIZE, sizeof(char));
+    assert (datafilename);
+
+    strcat (datafilename, "data/");
+    strcat (datafilename, outname);
+
+    FILE *datafile = fopen (datafilename, "w");
+    assert (datafile);
+
+    fprintf (datafile, "%d\n", LINE->N);
+
+    for (int i = 0; i < LINE->N; i++)
+        fprintf (datafile, "%-10.4g ", LINE->x[i]);
+    fprintf (datafile, "\n");
+
+    for (int i = 0; i < LINE->N; i++)
+        fprintf (datafile, "%-10.4g ", LINE->y[i]);
+    fprintf (datafile, "\n");
+
+    fprintf (datafile, "%.4g\n", LINE->a);
+    fprintf (datafile, "%.4g\n", LINE->b);
+    fprintf (datafile, "%.4g\n", LINE->ad);
+    fprintf (datafile, "%.4g", LINE->bd);
+    fclose (datafile);
+
+    //===================for_user====================
     FILE* out = fopen (outname, "w");
+
     fprintf (out, "Number of measurements: ");
     fprintf (out, "%d\n\n", LINE->N);
 
@@ -258,6 +286,32 @@ void LsmPrint (struct lsm_linear* LINE, char *outname)
 
 void PolinomLsmPrint (struct lsm_pol *POL, size_t deg, char *outname)
 {
+    //===================for_prog====================
+    char *datafilename = calloc (MAX_STR_SIZE, sizeof(char));
+    assert (datafilename);
+
+    strcat (datafilename, "data/");
+    strcat (datafilename, outname);
+
+    FILE *datafile = fopen (datafilename, "w");
+    assert (datafile);
+
+    fprintf (datafile, "%d\n", POL->N);
+
+    for (int i = 0; i < POL->N; i++)
+        fprintf (datafile, "%-10.4g ", POL->x[i]);
+    fprintf (datafile, "\n");
+
+    for (int i = 0; i < POL->N; i++)
+        fprintf (datafile, "%-10.4g ", POL->y[i]);
+    fprintf (datafile, "\n");
+
+    for (int i = 0; i <= deg; i++)
+        fprintf (datafile, "%.4g ", POL->a[i]);
+
+    fclose (datafile);
+
+    //===================for_user====================
     FILE* out = fopen (outname, "w");
     fprintf (out, "Number of measurements: %d\n\n", POL->N);
 
@@ -283,6 +337,34 @@ void PolinomLsmPrint (struct lsm_pol *POL, size_t deg, char *outname)
 
 void ExpLsmPrint (lsm_exp *EXP, char *outname)
 {
+    //===================for_prog====================
+    char *datafilename = calloc (MAX_STR_SIZE, sizeof(char));
+    assert (datafilename);
+
+    strcat (datafilename, "data/");
+    strcat (datafilename, outname);
+
+    FILE *datafile = fopen (datafilename, "w");
+    assert (datafile);
+
+    fprintf (datafile, "%d\n", EXP->N);
+
+    for (int i = 0; i < EXP->N; i++)
+        fprintf (datafile, "%-10.4g ", EXP->x[i]);
+    fprintf (datafile, "\n");
+
+    for (int i = 0; i < EXP->N; i++)
+        fprintf (datafile, "%-10.4g ", EXP->y[i]);
+    fprintf (datafile, "\n");
+
+    fprintf (datafile, "%.4g\n", EXP->a);
+    fprintf (datafile, "%.4g\n", EXP->b);
+    fprintf (datafile, "%.4g\n", EXP->ad);
+    fprintf (datafile, "%.4g\n", EXP->bd);
+    
+    fclose (datafile);
+
+    //===================for_user====================
     FILE *out = fopen (outname, "w");
 
     fprintf (out, "Number of measurements: %d\n\n", EXP->N);
@@ -303,7 +385,7 @@ void ExpLsmPrint (lsm_exp *EXP, char *outname)
     fprintf (out, "k = %.4g\n", EXP->a);
     fprintf (out, "b = %.4g\n", EXP->b);
     fprintf (out, "k_dev = %.4g\n", EXP->ad);
-    fprintf (out, "b_dev = %.4g\n", exp (EXP->bd));
+    fprintf (out, "b_dev = %.4g\n", EXP->bd);
 
     fclose (out);
 }
