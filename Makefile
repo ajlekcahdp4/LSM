@@ -16,6 +16,6 @@ SLE_T:
 GNUPLOT_T:
 	$(CC) -c $(DEBUG) $(SRC_PATH)gnuplot/gnuplot.c -o temps/gnuplot.o
 clean:
-	rm -rf *.o *.out temps run
+	rm -rf *.o *.out temps run vgcore.*
 clean_data:
-	rm -rf *.res *.dat data/*
+	rm -rf *.dat *.res *.ps *.dat data/* *.sh
