@@ -15,3 +15,5 @@ SLE_T:
 	$(CC) -c $(DEBUG) $(SRC_PATH)SLE/SLE.c -o temps/SLE.o
 clean:
 	rm -rf *.o *.out temps run
+clean_data:
+	rm -rf *.res *.dat data/*
