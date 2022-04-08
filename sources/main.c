@@ -16,6 +16,8 @@ int main ()
     char *answ   = calloc (MAX_ANSWER_SIZE, sizeof(char));
     char *input  = calloc (MAX_ANSWER_SIZE, sizeof(char));
     char *output = calloc (MAX_ANSWER_SIZE, sizeof(char));
+    char *xlabel = calloc (MAX_ANSWER_SIZE, sizeof(char));
+    char *ylabel = calloc (MAX_ANSWER_SIZE, sizeof(char));
     printf ("What approximation do you want to use?\n");
     while (res != 1)
     {
@@ -27,7 +29,11 @@ int main ()
             scanf ("%s", input);
             printf ("Enter output file name: ");
             scanf ("%s", output);
-            LinearLsmCalc (input, output);
+            printf ("Enter the name of the abscissa axis\n");
+            scanf ("%s", xlabel);
+            printf ("Enter the name of the ordinate axis\n");
+            scanf ("%s", ylabel);
+            LinearLsmCalc (input, output, xlabel, ylabel);
             res = 1;
         }
         else if (strcmp (answ, "e") == 0)
@@ -35,8 +41,11 @@ int main ()
             printf ("Enter input file name: ");
             scanf ("%s", input);
             printf ("Enter output file name: ");
-            scanf ("%s", output);
-            ExpLsmCalc (input, output);
+            scanf ("%s", output);printf ("Enter the name of the abscissa axis\n");
+            scanf ("%s", xlabel);
+            printf ("Enter the name of the ordinate axis\n");
+            scanf ("%s", ylabel);
+            ExpLsmCalc (input, output, xlabel, ylabel);
             res = 1;
         }
         else if (strcmp (answ, "p") == 0)
@@ -54,7 +63,11 @@ int main ()
             scanf ("%s", input);
             printf ("Enter output file name: ");
             scanf ("%s", output);
-            PolinomLsmCalc (deg, input, output);
+            printf ("Enter the name of the abscissa axis\n");
+            scanf ("%s", xlabel);
+            printf ("Enter the name of the ordinate axis\n");
+            scanf ("%s", ylabel);
+            PolinomLsmCalc (deg, input, output, xlabel, ylabel);
             res = 1;
         }
         else
@@ -63,6 +76,8 @@ int main ()
             ClearInputBuffer();
         }
     }
+    free (xlabel);
+    free (ylabel);
     free (answ);
     free (input);
     free (output);

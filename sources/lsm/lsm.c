@@ -30,19 +30,29 @@ double *InputRow (FILE *file, int N)
     return row;
 }
 
-
+#define START_SIZE 32
 struct input *Input (char *inputname)
 {
+    int res  = 2;
+    int size = 0;
+    double x = NAN;
+    double y = NAN;
     struct input * INP = calloc (1, sizeof (struct input));
+    INP->x = calloc (START_SIZE, sizeof(double));
+    INP->y = calloc (START_SIZE, sizeof(double));
     
     FILE* inputfile = fopen (inputname, "r");
     assert (inputfile);
 
+    while (res == 2)
+    {
+        res = fscanf (inputfile, "%lf %lf", &x, &y);
+        INP->x[size] = x;
+        INP->y[size] = y;
+        size += 1;
+    }
+    INP->N = size - 1;
     
-    fscanf(inputfile, "%d", &INP->N);
-    INP->x = InputRow (inputfile, INP->N);
-    INP->y = InputRow (inputfile, INP->N);
-
     fclose (inputfile);
     return INP;
 }
@@ -102,28 +112,28 @@ double Get_bd (double*x, double* y, int N)
 
 struct lsm_linear *LinearCalc (struct input *INP)
 {
-    struct lsm_linear *LSM = calloc (1, sizeof (struct lsm_linear));
-    assert (LSM);
+    struct lsm_linear *LINE = calloc (1, sizeof (struct lsm_linear));
+    assert (LINE);
 
-    LSM->N = INP->N;
-    LSM->x = calloc (LSM->N, sizeof(double));
-    LSM->y = calloc (LSM->N, sizeof(double));
-    assert (LSM->y);
-    assert (LSM->x);
+    LINE->N = INP->N;
+    LINE->x = calloc (LINE->N, sizeof(double));
+    LINE->y = calloc (LINE->N, sizeof(double));
+    assert (LINE->y);
+    assert (LINE->x);
 
-    memcpy (LSM->x, INP->x, LSM->N * sizeof(double));
-    memcpy (LSM->y, INP->y, LSM->N * sizeof(double));
+    memcpy (LINE->x, INP->x, LINE->N * sizeof(double));
+    memcpy (LINE->y, INP->y, LINE->N * sizeof(double));
 
-    LSM->a  = Get_a   (LSM->x, LSM->y, LSM->N);
-    LSM->b  = Get_b   (LSM->x, LSM->y, LSM->N);
-    LSM->ad = Get_ad  (LSM->x, LSM->y, LSM->N);
-    LSM->bd = Get_bd  (LSM->x, LSM->y, LSM->N);
+    LINE->a  = Get_a   (LINE->x, LINE->y, LINE->N);
+    LINE->b  = Get_b   (LINE->x, LINE->y, LINE->N);
+    LINE->ad = Get_ad  (LINE->x, LINE->y, LINE->N);
+    LINE->bd = Get_bd  (LINE->x, LINE->y, LINE->N);
 
-    return LSM;
+    return LINE;
 }
 
 
-void LinearLsmCalc (char *inputname, char *outname)
+void LinearLsmCalc (char *inputname, char *outname, char *xlabel, char *ylabel)
 {
     struct input *INP = Input(inputname);
 
@@ -135,17 +145,18 @@ void LinearLsmCalc (char *inputname, char *outname)
     char *script_name = calloc (MAX_STR_SIZE, sizeof(char));
     char *picture_name = calloc (MAX_STR_SIZE, sizeof(char));
 
+    LsmPrint (LINE, outname);
+
     strcat (script_name, outname);
     strcat (script_name, ".sh");
 
     strcat (picture_name, outname);
-    strcat (picture_name, ".png");
+    strcat (picture_name, ".ps");
 
-    LsmPrint (LINE, outname);
     struct lsm_t *LSM = calloc (1, sizeof (struct lsm_t));
     LSM->type = LINEAR;
     LSM->U.LINE = LINE;
-    gnuplot (script_name, picture_name, "graph", "x", "y", LSM);
+    gnuplot (script_name, picture_name, "graph", xlabel, ylabel, LSM);
     
     free (script_name);
     free (picture_name);
@@ -175,24 +186,42 @@ struct lsm_pol *PolinomCalc (struct input *INP, size_t deg)
     memcpy (POL->y, INP->y, POL->N * sizeof(double));
 
     POL->a = SolveSLE (INP, deg);
+    POL->deg = deg;
     
     return POL;
 }
 
 
 
-void PolinomLsmCalc (int deg, char *inputname, char *outname)
+void PolinomLsmCalc (int deg, char *inputname, char *outname, char *xlabel, char *ylabel)
 {
     struct input *INP = Input (inputname);
 
     struct lsm_pol *POL = PolinomCalc (INP, deg);
+    free (INP->x);
+    free (INP->y);
+    free (INP);
     
 
     PolinomLsmPrint (POL, deg, outname);
 
-    free (INP->x);
-    free (INP->y);
-    free (INP);
+    char *script_name = calloc (MAX_STR_SIZE, sizeof(char));
+    char *picture_name = calloc (MAX_STR_SIZE, sizeof(char));
+
+    strcat (script_name, outname);
+    strcat (script_name, ".sh");
+
+    strcat (picture_name, outname);
+    strcat (picture_name, ".ps");
+
+    struct lsm_t *LSM = calloc (1, sizeof (struct lsm_t));
+    LSM->type = POLINOMIAL;
+    LSM->U.POL = POL;
+    gnuplot (script_name, picture_name, "graph", xlabel, ylabel, LSM);
+    free (script_name);
+    free (picture_name);
+    free (LSM);
+    
     free (POL->x);
     free (POL->y);
     free (POL->a);
@@ -228,7 +257,7 @@ lsm_exp *ExpCalc (struct input *INP)
 
 
 
-void ExpLsmCalc (char *inputname, char *outname)
+void ExpLsmCalc (char *inputname, char *outname, char *xlabel, char *ylabel)
 {
     struct input *INP = Input (inputname);
 
@@ -236,10 +265,27 @@ void ExpLsmCalc (char *inputname, char *outname)
     
 
     ExpLsmPrint (EXP, outname);
-
     free (INP->x);
     free (INP->y);
     free (INP);
+
+    char *script_name = calloc (MAX_STR_SIZE, sizeof(char));
+    char *picture_name = calloc (MAX_STR_SIZE, sizeof(char));
+
+    strcat (script_name, outname);
+    strcat (script_name, ".sh");
+
+    strcat (picture_name, outname);
+    strcat (picture_name, ".ps");
+
+    struct lsm_t *LSM = calloc (1, sizeof (struct lsm_t));
+    LSM->type = EXPONENTIAL;
+    LSM->U.EXP = EXP;
+    gnuplot (script_name, picture_name, "graph", xlabel, ylabel, LSM);
+    free (script_name);
+    free (picture_name);
+    free (LSM);
+
     free (EXP->x);
     free (EXP->y);
     free (EXP);
@@ -261,21 +307,11 @@ void LsmPrint (struct lsm_linear* LINE, char *outname)
 
     FILE *datafile = fopen (datafilename, "w");
     assert (datafile);
-
-    fprintf (datafile, "%d\n", LINE->N);
-
-    for (int i = 0; i < LINE->N; i++)
-        fprintf (datafile, "%-10.4g ", LINE->x[i]);
-    fprintf (datafile, "\n");
+    free (datafilename);
 
     for (int i = 0; i < LINE->N; i++)
-        fprintf (datafile, "%-10.4g ", LINE->y[i]);
+        fprintf (datafile, "%.4g %.4g\n", LINE->x[i], LINE->y[i]);
     fprintf (datafile, "\n");
-
-    fprintf (datafile, "%.4g\n", LINE->a);
-    fprintf (datafile, "%.4g\n", LINE->b);
-    fprintf (datafile, "%.4g\n", LINE->ad);
-    fprintf (datafile, "%.4g", LINE->bd);
     fclose (datafile);
 
     //===================for_user====================
@@ -286,15 +322,12 @@ void LsmPrint (struct lsm_linear* LINE, char *outname)
 
     fprintf (out, "Measured values:\n");
     
-    fprintf (out, "X - coordinate:    ");
-    for (int i = 0; i < LINE->N; i++)
-        fprintf (out, "%-10.4g ", LINE->x[i]);
-    fprintf (out, "\n");
+    fprintf (out, "X      Y\n");
 
-    fprintf (out, "Y - coordinate:    ");
     for (int i = 0; i < LINE->N; i++)
-        fprintf (out, "%-10.4g ", LINE->y[i]);
+        fprintf (out, "%-6.4g %-6.4g\n", LINE->x[i], LINE->y[i]);
     fprintf (out, "\n\n");
+
     fprintf (out, "Coefficients of y = k*x + b:\n");
     fprintf (out, "k = %.4g\n", LINE->a);
     fprintf (out, "b = %.4g\n", LINE->b);
@@ -317,14 +350,8 @@ void PolinomLsmPrint (struct lsm_pol *POL, size_t deg, char *outname)
     FILE *datafile = fopen (datafilename, "w");
     assert (datafile);
 
-    fprintf (datafile, "%d\n", POL->N);
-
     for (int i = 0; i < POL->N; i++)
-        fprintf (datafile, "%-10.4g ", POL->x[i]);
-    fprintf (datafile, "\n");
-
-    for (int i = 0; i < POL->N; i++)
-        fprintf (datafile, "%-10.4g ", POL->y[i]);
+        fprintf (datafile, "%.4g %.4g\n", POL->x[i], POL->y[i]);
     fprintf (datafile, "\n");
 
     for (int i = 0; i <= deg; i++)
@@ -338,14 +365,9 @@ void PolinomLsmPrint (struct lsm_pol *POL, size_t deg, char *outname)
 
     fprintf (out, "Measured values:\n");
     
-    fprintf (out, "X - coordinate:    ");
+    fprintf (out, "X      Y\n");
     for (int i = 0; i < POL->N; i++)
-        fprintf (out, "%-10.4g ", POL->x[i]);
-    fprintf (out, "\n");
-
-    fprintf (out, "Y - coordinate:    ");
-    for (int i = 0; i < POL->N; i++)
-        fprintf (out, "%-10.4g ", POL->y[i]);
+        fprintf (out, "%-6.4g %-6.4g\n", POL->x[i], POL->y[i]);
     fprintf (out, "\n\n");
 
     fprintf (out, "Coefficients of the polinom (from zero-coefficient to %d-coefficiient):\n", POL->N);
@@ -368,20 +390,10 @@ void ExpLsmPrint (lsm_exp *EXP, char *outname)
     FILE *datafile = fopen (datafilename, "w");
     assert (datafile);
 
-    fprintf (datafile, "%d\n", EXP->N);
-
     for (int i = 0; i < EXP->N; i++)
-        fprintf (datafile, "%-10.4g ", EXP->x[i]);
+        fprintf (datafile, "%.4g %.4g\n", EXP->x[i], exp(EXP->y[i]));
     fprintf (datafile, "\n");
-
-    for (int i = 0; i < EXP->N; i++)
-        fprintf (datafile, "%-10.4g ", EXP->y[i]);
-    fprintf (datafile, "\n");
-
-    fprintf (datafile, "%.4g\n", EXP->a);
-    fprintf (datafile, "%.4g\n", EXP->b);
-    fprintf (datafile, "%.4g\n", EXP->ad);
-    fprintf (datafile, "%.4g\n", EXP->bd);
+    
     
     fclose (datafile);
 
@@ -392,14 +404,11 @@ void ExpLsmPrint (lsm_exp *EXP, char *outname)
 
     fprintf (out, "Measured values:\n");
 
-    fprintf (out, "X - coordinate:    ");
-    for (int i = 0; i < EXP->N; i++)
-        fprintf (out, "%-10.4g ", EXP->x[i]);
-    fprintf (out, "\n");
+    fprintf (out, "X      Y\n");
 
-    fprintf (out, "Y - coordinate:    ");
+    
     for (int i = 0; i < EXP->N; i++)
-        fprintf (out, "%-10.4g ", EXP->y[i]);
+        fprintf (out, "%-6.4g %-6.4g\n", EXP->x[i], exp(EXP->y[i]));
     fprintf (out, "\n\n");
 
     fprintf (out, "Coefficients of the exponent y = exp (k*x + b):\n");
