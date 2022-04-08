@@ -1,4 +1,4 @@
-#! /usr/bin/gnuplot
+#!/usr/bin/gnuplot
 set terminal postscript eps enhanced color solid
 set output "1.res.ps"
 set style line 1 lc rgb "blue" lw 4
