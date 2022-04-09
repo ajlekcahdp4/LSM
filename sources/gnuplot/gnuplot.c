@@ -8,7 +8,7 @@
 
 FILE *gnuplot_start (char *scriptname, char *picture_name);
 void gnuplot_plot (FILE *script, char *picture_name, char *title, char *xlabel, char *ylabel, struct lsm_t *LSM);
-
+void gnuplot_script_gen (char *script_name, char *picture_name, char *title, char *xlabel, char *ylabel, struct lsm_t *LSM);
 
 double _min (double *arr, size_t size)
 {

@@ -5,5 +5,5 @@
 vgcore.*
 *.ps
 *.png
-./*.*.sh
+1.res.sh
 run
