@@ -9,4 +9,4 @@ set xlabel "x"
 set ylabel "y"
 set xrange [0.9 * 1.000000 : 1.1 * 4.000000]
 set yrange [0.9 * 1.200000 : 1.1 * 67.000000]
-plot 13.700000 -20.060000 * x**1 +8.300000 * x**2 linestyle 1, "data/1.res" with points linestyle 2
+plot -12.200000 +21.133333 * x**1 -10.200000 * x**2 +2.466667 * x**3 linestyle 1, "data/1.res" with points linestyle 2
