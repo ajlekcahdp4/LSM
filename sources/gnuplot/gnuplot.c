@@ -69,7 +69,7 @@ FILE *gnuplot_start (char *script_name, char *picture_name)
 
     FILE *script = fopen (script_name, "w");
     fprintf (script, "#! /usr/bin/gnuplot\n");
-    fprintf (script, "set terminal postscript eps enhanced color solid\n");
+    fprintf (script, "set terminal png size 1000 ,  1200\n");
     fprintf (script, "set output \"%s\"\n", picture_name);
     fprintf (script, "set style line 1 lc rgb \"blue\" lw 4\n");
     fprintf (script, "set style line 2 lc rgb \"red\" lw 4 ps 2\n");
@@ -95,7 +95,7 @@ void gnuplot_plot (FILE *script, char *picture_name, char *title, char *xlabel, 
     char *data_file_name = calloc (MAX_NAME_LEN, sizeof(char));
     assert (data_file_name);
     strcat (data_file_name, "data/");
-    strncat (data_file_name, picture_name, strlen(picture_name) - 3);
+    strncat (data_file_name, picture_name, strlen(picture_name) - 4);
     
     fprintf (script, "set xlabel \"%s\"\n", xlabel);
     fprintf (script, "set ylabel \"%s\"\n", ylabel);

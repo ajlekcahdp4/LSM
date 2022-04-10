@@ -151,7 +151,7 @@ void LinearLsmCalc (char *inputname, char *outname, char *xlabel, char *ylabel)
     strcat (script_name, ".sh");
 
     strcat (picture_name, outname);
-    strcat (picture_name, ".ps");
+    strcat (picture_name, ".png");
 
     struct lsm_t *LSM = calloc (1, sizeof (struct lsm_t));
     LSM->type = LINEAR;
@@ -212,7 +212,7 @@ void PolinomLsmCalc (int deg, char *inputname, char *outname, char *xlabel, char
     strcat (script_name, ".sh");
 
     strcat (picture_name, outname);
-    strcat (picture_name, ".ps");
+    strcat (picture_name, ".png");
 
     struct lsm_t *LSM = calloc (1, sizeof (struct lsm_t));
     LSM->type = POLINOMIAL;
@@ -276,7 +276,7 @@ void ExpLsmCalc (char *inputname, char *outname, char *xlabel, char *ylabel)
     strcat (script_name, ".sh");
 
     strcat (picture_name, outname);
-    strcat (picture_name, ".ps");
+    strcat (picture_name, ".png");
 
     struct lsm_t *LSM = calloc (1, sizeof (struct lsm_t));
     LSM->type = EXPONENTIAL;
