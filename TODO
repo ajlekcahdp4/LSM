@@ -1,2 +1,6 @@
 - Resize in input (lsm.c)
 - better input (not scanf) in main.c
+- output accuracy
+- larger font
+- png support right way
+- 3 point size
