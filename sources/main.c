@@ -108,6 +108,5 @@ int main ()
     free (answ);
     free (input);
     free (output);
-    system ("rm -rf data");
     return 0;
 }
