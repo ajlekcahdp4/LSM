@@ -1,6 +1,6 @@
 - Resize in input (lsm.c)
-- better input (not scanf) in main.c
-- output accuracy
-- larger font
+- better input (not scanf) in main.c ( done 10.04 )
+- output accuracy ( done 10.04 )
+- larger font ( done 10.04 )
 - png support right way
-- 3 point size
+- 3 point size ( done 10.04 )

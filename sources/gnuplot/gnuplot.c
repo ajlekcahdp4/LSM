@@ -69,11 +69,15 @@ FILE *gnuplot_start (char *script_name, char *picture_name)
 
     FILE *script = fopen (script_name, "w");
     fprintf (script, "#! /usr/bin/gnuplot\n");
-    fprintf (script, "set terminal png size 1000 ,  1200\n");
+    fprintf (script, "set terminal png size 1000, 1200\n");
     fprintf (script, "set output \"%s\"\n", picture_name);
+    fprintf (script, "set font \"Times, 20\"\n");
     fprintf (script, "set style line 1 lc rgb \"blue\" lw 4\n");
-    fprintf (script, "set style line 2 lc rgb \"red\" lw 4 ps 2\n");
+    fprintf (script, "set style line 2 lc rgb \"red\" lw 4 ps 4\n");
+    fprintf (script, "set style line 3 lc rgb \"black\" lw 2\n");
     fprintf (script, "set grid xtics ytics\n");
+    fprintf (script, "set xzeroaxis linestyle 3\n");
+    fprintf (script, "set yzeroaxis linestyle 3\n");
     return script;
 }
 
@@ -97,8 +101,8 @@ void gnuplot_plot (FILE *script, char *picture_name, char *title, char *xlabel, 
     strcat (data_file_name, "data/");
     strncat (data_file_name, picture_name, strlen(picture_name) - 4);
     
-    fprintf (script, "set xlabel \"%s\"\n", xlabel);
-    fprintf (script, "set ylabel \"%s\"\n", ylabel);
+    fprintf (script, "set xlabel \"%s\" font \"Times, 23\"\n", xlabel);
+    fprintf (script, "set ylabel \"%s\" font \"Times, 23\"\n", ylabel);
 
     switch (LSM->type)
     {
@@ -143,10 +147,10 @@ void gnuplot_plot (FILE *script, char *picture_name, char *title, char *xlabel, 
         fprintf (script, "set xrange [%lf : %lf]\n", min_x - 0.2*diff_x, max_x + 0.2*diff_x);
         fprintf (script, "set yrange [%lf : %lf]\n", min_y - 0.2*diff_y, max_y + 0.2*diff_y);
         
-        fprintf (script, "plot %lf ", LSM->U.POL->a[0]);
+        fprintf (script, "plot %.2lf ", LSM->U.POL->a[0]);
         for (int i = 1; i <= LSM->U.POL->deg; i++)
-            fprintf (script, "%+lf * x**%d ", LSM->U.POL->a[i], i);
-        fprintf (script, "linestyle 1, \"%s\" with points linestyle 2\n", data_file_name);
+            fprintf (script, "%+.2lf * x**%d ", LSM->U.POL->a[i], i);
+        fprintf (script, "linestyle 1, \"%s\" with points linestyle 2 notitle\n", data_file_name);
         break;
     }
     free (data_file_name);
