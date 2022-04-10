@@ -84,7 +84,14 @@ void gnuplot_plot (FILE *script, char *picture_name, char *title, char *xlabel, 
     assert (xlabel);
     assert (ylabel);
 
-    int N = 0;
+    int N      = 0;
+    int min_x  = 0;
+    int max_x  = 0;
+    int diff_x = 0;
+    int min_y  = 0;
+    int max_y  = 0;
+    int diff_y = 0;
+
     char *data_file_name = calloc (MAX_NAME_LEN, sizeof(char));
     assert (data_file_name);
     strcat (data_file_name, "data/");
@@ -98,20 +105,44 @@ void gnuplot_plot (FILE *script, char *picture_name, char *title, char *xlabel, 
     {
     case LINEAR:
         N = LSM->U.LINE->N;
-        fprintf (script, "set xrange [0.9 * %lf : 1.1 * %lf]\n", _min(LSM->U.LINE->x, N), _max (LSM->U.LINE->x, N));
-        fprintf (script, "set yrange [0.9 * %lf : 1.1 * %lf]\n", _min(LSM->U.EXP->y, N), _max (LSM->U.EXP->y, N));
+        max_x  = _max (LSM->U.LINE->x, N);
+        min_x  = _min (LSM->U.LINE->x, N);
+        diff_x = max_x - min_x;
+
+        max_y  = _max (LSM->U.LINE->y, N);
+        min_y  = _min (LSM->U.LINE->y, N);
+        diff_y = max_y - min_y;
+
+        fprintf (script, "set xrange [%lf : %lf]\n", min_x - 0.2*diff_x, max_x + 0.2*diff_x);
+        fprintf (script, "set yrange [%lf : %lf]\n", min_y - 0.2*diff_y, max_y + 0.2*diff_y);
         fprintf (script, "plot %lf * x %+lf linestyle 1, \"%s\" with points linestyle 2\n", LSM->U.LINE->a, LSM->U.LINE->b, data_file_name);
         break;
     case EXPONENTIAL:
         N = LSM->U.EXP->N;
-        fprintf (script, "set xrange [0.9 * %lf : 1.1 * %lf]\n", _min(LSM->U.EXP->x, N), _max (LSM->U.EXP->x, N));
-        fprintf (script, "set yrange [0.8 * %lf : 1.2 * %lf]\n", _min(LSM->U.EXP->y, N), exp(_max (LSM->U.EXP->y, N)));
+        max_x  = _max (LSM->U.EXP->x, N);
+        min_x  = _min (LSM->U.EXP->x, N);
+        diff_x = max_x - min_x;
+
+        max_y  = exp (_max (LSM->U.EXP->y, N));
+        min_y  = exp (_min (LSM->U.EXP->y, N));
+        diff_y = max_y - min_y;
+
+        fprintf (script, "set xrange [%lf : %lf]\n", min_x - 0.2*diff_x, max_x + 0.2*diff_x);
+        fprintf (script, "set yrange [%lf : %lf]\n", min_y - 0.2*diff_y, max_y + 0.2*diff_y);
         fprintf (script, "plot exp (%lf * x %+lf) linestyle 1, \"%s\" with points linestyle 2\n", LSM->U.EXP->a, LSM->U.EXP->b, data_file_name);
         break;
     case POLINOMIAL:
         N = LSM->U.POL->N;
-        fprintf (script, "set xrange [0.9 * %lf : 1.1 * %lf]\n", _min(LSM->U.POL->x, N), _max (LSM->U.POL->x, N));
-        fprintf (script, "set yrange [0.9 * %lf : 1.1 * %lf]\n", _min(LSM->U.POL->y, N), _max (LSM->U.POL->y, N));
+        max_x  = _max (LSM->U.POL->x, N);
+        min_x  = _min (LSM->U.POL->x, N);
+        diff_x = max_x - min_x;
+
+        max_y  = _max (LSM->U.POL->y, N);
+        min_y  = _min (LSM->U.POL->y, N);
+        diff_y = max_y - min_y;
+
+        fprintf (script, "set xrange [%lf : %lf]\n", min_x - 0.2*diff_x, max_x + 0.2*diff_x);
+        fprintf (script, "set yrange [%lf : %lf]\n", min_y - 0.2*diff_y, max_y + 0.2*diff_y);
         
         fprintf (script, "plot %lf ", LSM->U.POL->a[0]);
         for (int i = 1; i <= LSM->U.POL->deg; i++)

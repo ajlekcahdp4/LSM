@@ -10,6 +10,26 @@ void ClearInputBuffer ()
     while (getchar() != '\n') {;}
 }
 
+int ReadWord (char *buf)
+{
+    int i = 0;
+    char c = getchar ();
+    
+    while (c == '\n')
+        c = getchar ();
+
+    while (c != '\n')
+    {
+        buf[i] = c;
+        i++;
+        c = getchar ();
+    }
+    if (i == 0)
+        return 1;
+    return 0;
+} 
+
+
 int main ()
 {
     int res = 0;
@@ -27,12 +47,14 @@ int main ()
         {
             printf ("Enter input file name: ");
             scanf ("%s", input);
+            ClearInputBuffer ();
             printf ("Enter output file name: ");
             scanf ("%s", output);
+            ClearInputBuffer ();
             printf ("Enter the name of the abscissa axis\n");
-            scanf ("%s", xlabel);
+            ReadWord (xlabel);
             printf ("Enter the name of the ordinate axis\n");
-            scanf ("%s", ylabel);
+            ReadWord (ylabel);
             LinearLsmCalc (input, output, xlabel, ylabel);
             res = 1;
         }
@@ -40,11 +62,14 @@ int main ()
         {
             printf ("Enter input file name: ");
             scanf ("%s", input);
+            ClearInputBuffer ();
             printf ("Enter output file name: ");
-            scanf ("%s", output);printf ("Enter the name of the abscissa axis\n");
-            scanf ("%s", xlabel);
+            scanf ("%s", output);
+            ClearInputBuffer ();
+            printf ("Enter the name of the abscissa axis\n");
+            ReadWord (xlabel);
             printf ("Enter the name of the ordinate axis\n");
-            scanf ("%s", ylabel);
+            ReadWord (ylabel);
             ExpLsmCalc (input, output, xlabel, ylabel);
             res = 1;
         }
@@ -61,12 +86,14 @@ int main ()
             }
             printf ("Enter input file name: ");
             scanf ("%s", input);
+            ClearInputBuffer ();
             printf ("Enter output file name: ");
             scanf ("%s", output);
+            ClearInputBuffer ();
             printf ("Enter the name of the abscissa axis\n");
-            scanf ("%s", xlabel);
+            ReadWord (xlabel);
             printf ("Enter the name of the ordinate axis\n");
-            scanf ("%s", ylabel);
+            ReadWord (ylabel);
             PolinomLsmCalc (deg, input, output, xlabel, ylabel);
             res = 1;
         }
