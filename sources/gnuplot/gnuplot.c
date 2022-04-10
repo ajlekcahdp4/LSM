@@ -96,8 +96,7 @@ void gnuplot_plot (FILE *script, char *picture_name, char *title, char *xlabel, 
     assert (data_file_name);
     strcat (data_file_name, "data/");
     strncat (data_file_name, picture_name, strlen(picture_name) - 3);
-
-    fprintf (script, "set title \"%s\"\n", title);
+    
     fprintf (script, "set xlabel \"%s\"\n", xlabel);
     fprintf (script, "set ylabel \"%s\"\n", ylabel);
 
