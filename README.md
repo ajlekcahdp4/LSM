@@ -5,7 +5,9 @@
 - [How to clone](#how-to-clone)
 - [Dependencies](#dependencies)
 - [How to use](#how-to-use)
-    
+    - [Use as an library](#use-as-an-library)
+    - [Use as a program](#you-can-also-use-this-library-as-a-project-for-least-squares-method-using-my-main-file-in-this-case)
+
     - [Input files format](#input-files-format)
 
 
@@ -18,7 +20,7 @@ cd LSM
 ```
 
 ## Dependencies
-1) [gnuplot](http://www.gnuplot.info):
+### 1) [gnuplot](http://www.gnuplot.info):
 
 You can install gnuplot by apt / apt-get:
 ```
@@ -30,7 +32,7 @@ Or by pacman (On Arch and Manjaro linux):
 sudo pacman -S gnuplot
 ```
 * If you face some problem with `libQt5Core.so.5` use this [reccomendations](https://stackoverflow.com/questions/63627955/cant-load-shared-library-libqt5core-so-5).
-2) make
+### 2) [make](https://www.gnu.org/software/make/)
 
 You can install make by apt / apt-get:
 ```
@@ -42,9 +44,14 @@ Or by pacman (On Arch and Manjaro linux):
 sudo pacman -S make
 ```
 
-## How to use
+# How to use
+----
 
-### You can also use this library as a project for least squares method using my `main` file. In this case:
+
+## Use as an library
+
+
+## You can also use this library as a project for least squares method using my `main` file. In this case:
 To compile this program run:
 ```
 make
@@ -58,7 +65,8 @@ The program will ask you about type of aproximation (managed linear, exponential
 
 ## Input files format
 You have to write measured points in a file this way:
-1) Write abscissa and ordinate values in columns like this
+1) The decimal separator should be a dot, not a comma.
+2) Write abscissa and ordinate values in columns like this
 
 
 
@@ -79,8 +87,6 @@ Point number | X | Y
 3            |3.0|26.0
 4            |4.0|67.0
 5            |5.0|116.0
-
-2) The decimal separator should be a dot, not a comma.
 
 
 
