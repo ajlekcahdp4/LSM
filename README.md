@@ -61,12 +61,11 @@ You have to write measured points in a file this way:
 1) Write abscissa and ordinate values in columns like this
 
 <p align = "center">
-<figure>
 <img src="https://github.com/ajlekcahdp4/LSM/blob/main/examples/input-file-format.png" alt="example of input file">
-<figcaption>Points near y = x^3 line (for example)</figcaption>
-</figure>
 </p>
+Points near y = x^3 line (for example)
 
 2) The decimal separator should be a dot, not a comma.
+
 
 
