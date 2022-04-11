@@ -103,7 +103,7 @@ int main ()
         }
         else if (strcmp (answ, "p") == 0)
         {
-            int deg = 0;
+            size_t deg = 0;
             while (res != 1)
             {
                 printf ("What degree of polinom do you want?\n");

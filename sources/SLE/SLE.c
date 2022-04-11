@@ -44,7 +44,6 @@ struct coordinates *MaxElemInMatrix (double** Matrix, size_t n, size_t N);
 double Gauss_Jordan (double** Matrix, size_t N)
 {
     double det  = 1.0;
-    size_t row  = 0;
     size_t col  = 0;
     size_t Prow = 0;
     size_t Pcol = 0;
@@ -213,15 +212,15 @@ double **SLEmatrixInit (struct input *INP, int deg)
     double **Matrix = calloc (deg + 1, sizeof (double*));
     assert (Matrix);
 
-    for (size_t i = 0; i <= deg; i++)
+    for (int i = 0; i <= deg; i++)
     {
         Matrix[i] = calloc (deg + 2, sizeof (double));
         assert (Matrix[i]);
     }
 
-    for (size_t row = 0; row <= deg; row++)
+    for (int row = 0; row <= deg; row++)
     {
-        for (size_t col = 0; col <= deg; col++)
+        for (int col = 0; col <= deg; col++)
         {
             Matrix[row][col] = Find_Ck (INP, col + row);
         }

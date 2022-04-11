@@ -7,8 +7,8 @@
 
 
 FILE *gnuplot_start (char *scriptname, char *picture_name);
-void gnuplot_plot (FILE *script, struct output_t *out, struct lsm_t *LSM);
-void gnuplot_script_gen (struct output_t *out, struct lsm_t *LSM);
+void gnuplot_plot (FILE *script, struct output_t *out, char *input_name, struct lsm_t *LSM);
+void gnuplot_script_gen (struct output_t *out, char *input_name, struct lsm_t *LSM);
 
 double _min (double *arr, size_t size)
 {
@@ -34,9 +34,9 @@ double _max (double *arr, size_t size)
 
 //=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
 #define MAX_CMD_SIZE 128
-void gnuplot (struct output_t *out, struct lsm_t *LSM)
+void gnuplot (struct output_t *out, char *input_name, struct lsm_t *LSM)
 {
-    gnuplot_script_gen (out, LSM);
+    gnuplot_script_gen (out, input_name, LSM);
 
     char *chmod = calloc (MAX_CMD_SIZE, sizeof(char));
     strcat (chmod, "chmod +x ");
@@ -53,10 +53,10 @@ void gnuplot (struct output_t *out, struct lsm_t *LSM)
 #undef MAX_CMD_SIZE
 
 
-void gnuplot_script_gen (struct output_t *out, struct lsm_t *LSM)
+void gnuplot_script_gen (struct output_t *out, char *input_name, struct lsm_t *LSM)
 {
     FILE *script = gnuplot_start (out->script_name, out->picture_name);
-    gnuplot_plot (script, out, LSM);
+    gnuplot_plot (script, out, input_name, LSM);
     fclose (script);
 }
 
@@ -88,7 +88,7 @@ FILE *gnuplot_start (char *script_name, char *picture_name)
 }
 
 #define MAX_NAME_LEN 256
-void gnuplot_plot (FILE *script, struct output_t *out, struct lsm_t *LSM)
+void gnuplot_plot (FILE *script, struct output_t *out, char *input_name, struct lsm_t *LSM)
 {
     assert(out);
 
@@ -99,19 +99,8 @@ void gnuplot_plot (FILE *script, struct output_t *out, struct lsm_t *LSM)
     int min_y  = 0;
     int max_y  = 0;
     int diff_y = 0;
-    size_t picture_name_len = strlen (out->picture_name);
-    size_t folder_name_len = strlen ("data/");
 
-    char *data_file_name = calloc (picture_name_len + folder_name_len, sizeof(char));
-    assert (data_file_name);
 
-    strcat (data_file_name, "data/");
-    //----------------------------
-    if (strcmp (out->picture_name + picture_name_len - 4, ".png") == 0)
-        strncat (data_file_name, out->picture_name, picture_name_len - 4);
-    else if (strcmp (out->picture_name + picture_name_len - 3, ".ps") == 0)
-        strncat (data_file_name, out->picture_name, picture_name_len - 3);
-    //----------------------------
     
     
     fprintf (script, "set xlabel \"%s\" font \"Times, 23\"\n", out->xlabel);
@@ -131,7 +120,7 @@ void gnuplot_plot (FILE *script, struct output_t *out, struct lsm_t *LSM)
 
         fprintf (script, "set xrange [%lf : %lf]\n", min_x - 0.2*diff_x, max_x + 0.2*diff_x);
         fprintf (script, "set yrange [%lf : %lf]\n", min_y - 0.2*diff_y, max_y + 0.2*diff_y);
-        fprintf (script, "plot %lf * x %+lf linestyle 1, \"%s\" with points linestyle 2\n", LSM->U.LINE->a, LSM->U.LINE->b, data_file_name);
+        fprintf (script, "plot %lf * x %+lf linestyle 1, \"%s\" with points linestyle 2\n", LSM->U.LINE->a, LSM->U.LINE->b, input_name);
         break;
     case EXPONENTIAL:
         N = LSM->U.EXP->N;
@@ -145,7 +134,7 @@ void gnuplot_plot (FILE *script, struct output_t *out, struct lsm_t *LSM)
 
         fprintf (script, "set xrange [%lf : %lf]\n", min_x - 0.2*diff_x, max_x + 0.2*diff_x);
         fprintf (script, "set yrange [%lf : %lf]\n", min_y - 0.2*diff_y, max_y + 0.2*diff_y);
-        fprintf (script, "plot exp (%lf * x %+lf) linestyle 1, \"%s\" with points linestyle 2\n", LSM->U.EXP->a, LSM->U.EXP->b, data_file_name);
+        fprintf (script, "plot exp (%lf * x %+lf) linestyle 1, \"%s\" with points linestyle 2\n", LSM->U.EXP->a, LSM->U.EXP->b, input_name);
         break;
     case POLINOMIAL:
         N = LSM->U.POL->N;
@@ -163,9 +152,8 @@ void gnuplot_plot (FILE *script, struct output_t *out, struct lsm_t *LSM)
         fprintf (script, "plot %.2lf ", LSM->U.POL->a[0]);
         for (int i = 1; i <= LSM->U.POL->deg; i++)
             fprintf (script, "%+.2lf * x**%d ", LSM->U.POL->a[i], i);
-        fprintf (script, "linestyle 1, \"%s\" with points linestyle 2 notitle\n", data_file_name);
+        fprintf (script, "linestyle 1, \"%s\" with points linestyle 2 notitle\n", input_name);
         break;
     }
-    free (data_file_name);
 }
 #undef MAX_NAME_LEN

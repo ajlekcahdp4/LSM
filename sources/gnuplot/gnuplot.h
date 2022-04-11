@@ -9,4 +9,4 @@ struct output_t
     enum format fmt;
 };
 
-void gnuplot (struct output_t *out, struct lsm_t *LSM);
+void gnuplot (struct output_t *out, char *input_name, struct lsm_t *LSM);
