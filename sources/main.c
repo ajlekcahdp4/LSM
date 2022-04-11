@@ -144,6 +144,7 @@ int main ()
             ClearInputBuffer();
         }
     }
+    free (fmt);
     free (xlabel);
     free (ylabel);
     free (answ);

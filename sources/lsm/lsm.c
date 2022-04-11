@@ -198,8 +198,7 @@ struct lsm_pol *PolinomCalc (struct input *INP, size_t deg)
     POL->N = INP->N;
     POL->x = calloc (POL->N, sizeof(double));
     POL->y = calloc (POL->N, sizeof(double));
-    POL->a = calloc (POL->N, sizeof(double));
-    assert (POL->x && POL->y && POL->a);
+    assert (POL->x && POL->y);
 
     memcpy (POL->x, INP->x, POL->N * sizeof(double));
     memcpy (POL->y, INP->y, POL->N * sizeof(double));
@@ -325,7 +324,7 @@ void ExpLsmCalc (char *inputname, char *outname, char *xlabel, char *ylabel, enu
 
     gnuplot (out, LSM);
 
-    free(out);
+    free(out);  
     free (script_name);
     free (picture_name);
     free (LSM);
@@ -419,6 +418,7 @@ void PolinomLsmPrint (struct lsm_pol *POL, size_t deg, char *outname)
         fprintf (out, "%.4g ", POL->a[i]);
     fprintf (out, "\n");
 
+    free (datafilename);
     fclose (out);    
 }
 
@@ -461,6 +461,7 @@ void ExpLsmPrint (lsm_exp *EXP, char *outname)
     fprintf (out, "k_dev = %.4g\n", EXP->ad);
     fprintf (out, "b_dev = %.4g\n", EXP->bd);
 
+    free (datafilename);
     fclose (out);
 }
 #undef MAX_STR_SIZE

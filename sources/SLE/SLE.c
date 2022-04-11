@@ -81,7 +81,7 @@ void Elimination (double** Matrix, size_t N, size_t col)
         if (row != col)
         {
             k = Matrix[row][col] / Matrix [col][col];
-            for (size_t cur_col = col; cur_col <= N + 1; cur_col++)
+            for (size_t cur_col = col; cur_col <= N; cur_col++)
             {
                 Matrix[row][cur_col] -= k * Matrix[col][cur_col];
             }
@@ -285,6 +285,8 @@ double *SolveSLE (struct input *INP, size_t deg)
     {
         coefficients[i] = Matrix[i][deg + 1] / Matrix[i][i];
     }
-
+    for (size_t i = 0; i < deg + 1; i++)
+        free (Matrix[i]);
+    free(Matrix);
     return coefficients;
 }
