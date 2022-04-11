@@ -1,7 +1,7 @@
 ![Linux](https://img.shields.io/badge/Linux-FCC624?style=for-the-badge&logo=linux&logoColor=black)
 
-[license](https://img.shields.io/github/license/{ajlekcahdp4}/{LSM}.svg)
-[stars](https://img.shields.io/github/stars/{ajlekcahdp4}/{LSM}.svg)
+[license](https://img.shields.io/github/license/ajlekcahdp4/LSM.svg)
+[stars](https://img.shields.io/github/stars/ajlekcahdp4/LSM.svg)
 # <p align = "center">Least Square Method Calculation</p>
 ## table of contents:
 
