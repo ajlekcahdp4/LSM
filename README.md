@@ -1,7 +1,9 @@
 ![Linux](https://img.shields.io/badge/Linux-FCC624?style=for-the-badge&logo=linux&logoColor=black)
 
 ![license](https://img.shields.io/github/license/ajlekcahdp4/LSM.svg)
-![stars](https://img.shields.io/github/stars/ajlekcahdp4/LSM?style=social)
+![GH stars](https://img.shields.io/github/stars/ajlekcahdp4/LSM.svg)
+![GH pull-requests](https://img.shields.io/github/issues-pr/ajlekcahdp4/LSM.svg)
+![GH issues](https://img.shields.io/github/issues/ajlekcahdp4/LSM.svg)
 # <p align = "center">Least Square Method Calculation</p>
 ## table of contents:
 
@@ -10,7 +12,6 @@
 - [How to use](#how-to-use)
     - [Use as an library](#use-as-a-library)
     - [Use as a program](#you-can-also-use-this-library-as-a-complete-program-for-least-squares-method-calculation-and-graph-plotting)
-
     - [Input files format](#input-files-format)
 
 
