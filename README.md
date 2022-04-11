@@ -5,6 +5,8 @@
 - [How to clone](#how-to-clone)
 - [Dependencies](#dependencies)
 - [How to use](#how-to-use)
+    
+    - [Input files format](#input-files-format)
 
 
 ## How to clone
@@ -53,4 +55,18 @@ And then to run it use:
 ./run
 ```
 The program will ask you about type of aproximation (managed linear, exponential and any-degrees polinomial), input file name, output file name, abscissa axis label, ordinate axis label and degree of the polinom (in polinomial approximation case)
+
+## Input files format
+You have to write measured points in a file this way:
+1) Write abscissa and ordinate values in columns like this
+
+<p align = "center">
+<figure>
+<img src="https://github.com/ajlekcahdp4/LSM/blob/main/examples/input-file-format.png" alt="example of input file">
+<figcaption>Points near y = x^3 line (for example)</figcaption>
+</figure>
+</p>
+
+2) The decimal separator should be a dot, not a comma.
+
 

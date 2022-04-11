@@ -4,7 +4,7 @@
 *.out
 vgcore.*
 *.ps
-*.png
+/*.png
 1.res.sh
 data/
 run
