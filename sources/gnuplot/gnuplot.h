@@ -1,3 +1,12 @@
 #include "../lsm/lsm.h"
 
-void gnuplot (char *script_name, char *picture_name, char *title, char *xlabel, char *ylabel, struct lsm_t *LSM, enum format fmt);
+struct output_t
+{
+    char *script_name;
+    char *picture_name;
+    char *xlabel;
+    char *ylabel;
+    enum format fmt;
+};
+
+void gnuplot (struct output_t *out, struct lsm_t *LSM);

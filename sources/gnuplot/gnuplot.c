@@ -7,8 +7,8 @@
 
 
 FILE *gnuplot_start (char *scriptname, char *picture_name);
-void gnuplot_plot (FILE *script, char *picture_name, char *title, char *xlabel, char *ylabel, struct lsm_t *LSM);
-void gnuplot_script_gen (char *script_name, char *picture_name, char *title, char *xlabel, char *ylabel, struct lsm_t *LSM, enum format fmt);
+void gnuplot_plot (FILE *script, struct output_t *out, struct lsm_t *LSM);
+void gnuplot_script_gen (struct output_t *out, struct lsm_t *LSM);
 
 double _min (double *arr, size_t size)
 {
@@ -34,29 +34,29 @@ double _max (double *arr, size_t size)
 
 //=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
 #define MAX_CMD_SIZE 128
-void gnuplot (char *script_name, char *picture_name, char *title, char *xlabel, char *ylabel, struct lsm_t *LSM, enum format fmt)
+void gnuplot (struct output_t *out, struct lsm_t *LSM)
 {
-    gnuplot_script_gen (script_name, picture_name, title, xlabel, ylabel, LSM, fmt);
+    gnuplot_script_gen (out, LSM);
 
     char *chmod = calloc (MAX_CMD_SIZE, sizeof(char));
     strcat (chmod, "chmod +x ");
-    strcat (chmod, script_name);
+    strcat (chmod, out->script_name);
     system (chmod);
     free (chmod);
 
     char *run_script = calloc (MAX_CMD_SIZE, sizeof(char));
     strcat (run_script, "./");
-    strcat (run_script, script_name);
+    strcat (run_script, out->script_name);
     system (run_script);
     free (run_script);
 }
 #undef MAX_CMD_SIZE
 
 
-void gnuplot_script_gen (char *script_name, char *picture_name, char *title, char *xlabel, char *ylabel, struct lsm_t *LSM, enum format fmt)
+void gnuplot_script_gen (struct output_t *out, struct lsm_t *LSM)
 {
-    FILE *script = gnuplot_start (script_name, picture_name);
-    gnuplot_plot (script, picture_name, title, xlabel, ylabel, LSM);
+    FILE *script = gnuplot_start (out->script_name, out->picture_name);
+    gnuplot_plot (script, out, LSM);
     fclose (script);
 }
 
@@ -88,11 +88,9 @@ FILE *gnuplot_start (char *script_name, char *picture_name)
 }
 
 #define MAX_NAME_LEN 256
-void gnuplot_plot (FILE *script, char *picture_name, char *title, char *xlabel, char *ylabel, struct lsm_t *LSM)
+void gnuplot_plot (FILE *script, struct output_t *out, struct lsm_t *LSM)
 {
-    assert (title);
-    assert (xlabel);
-    assert (ylabel);
+    assert(out);
 
     int N      = 0;
     int min_x  = 0;
@@ -101,7 +99,7 @@ void gnuplot_plot (FILE *script, char *picture_name, char *title, char *xlabel, 
     int min_y  = 0;
     int max_y  = 0;
     int diff_y = 0;
-    size_t picture_name_len = strlen (picture_name);
+    size_t picture_name_len = strlen (out->picture_name);
     size_t folder_name_len = strlen ("data/");
 
     char *data_file_name = calloc (picture_name_len + folder_name_len, sizeof(char));
@@ -109,15 +107,15 @@ void gnuplot_plot (FILE *script, char *picture_name, char *title, char *xlabel, 
 
     strcat (data_file_name, "data/");
     //----------------------------
-    if (strcmp (picture_name + picture_name_len - 4, ".png") == 0)
-        strncat (data_file_name, picture_name, picture_name_len - 4);
-    else if (strcmp (picture_name + picture_name_len - 3, ".ps") == 0)
-        strncat (data_file_name, picture_name, picture_name_len - 3);
+    if (strcmp (out->picture_name + picture_name_len - 4, ".png") == 0)
+        strncat (data_file_name, out->picture_name, picture_name_len - 4);
+    else if (strcmp (out->picture_name + picture_name_len - 3, ".ps") == 0)
+        strncat (data_file_name, out->picture_name, picture_name_len - 3);
     //----------------------------
     
     
-    fprintf (script, "set xlabel \"%s\" font \"Times, 23\"\n", xlabel);
-    fprintf (script, "set ylabel \"%s\" font \"Times, 23\"\n", ylabel);
+    fprintf (script, "set xlabel \"%s\" font \"Times, 23\"\n", out->xlabel);
+    fprintf (script, "set ylabel \"%s\" font \"Times, 23\"\n", out->ylabel);
 
     switch (LSM->type)
     {

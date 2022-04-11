@@ -166,8 +166,17 @@ void LinearLsmCalc (char *inputname, char *outname, char *xlabel, char *ylabel, 
     struct lsm_t *LSM = calloc (1, sizeof (struct lsm_t));
     LSM->type = LINEAR;
     LSM->U.LINE = LINE;
-    gnuplot (script_name, picture_name, "graph", xlabel, ylabel, LSM, fmt);
+
+    struct output_t *out = calloc (1, sizeof(struct output_t));
+    out->fmt = fmt;
+    out->picture_name = picture_name;
+    out->script_name = script_name;
+    out->xlabel = xlabel;
+    out->ylabel = ylabel;
+
+    gnuplot (out, LSM);
     
+    free (out);
     free (script_name);
     free (picture_name);
     free (LSM);
@@ -231,7 +240,17 @@ void PolinomLsmCalc (int deg, char *inputname, char *outname, char *xlabel, char
     struct lsm_t *LSM = calloc (1, sizeof (struct lsm_t));
     LSM->type = POLINOMIAL;
     LSM->U.POL = POL;
-    gnuplot (script_name, picture_name, "graph", xlabel, ylabel, LSM, fmt);
+
+    struct output_t *out = calloc (1, sizeof(struct output_t));
+    out->fmt = fmt;
+    out->picture_name = picture_name;
+    out->script_name = script_name;
+    out->xlabel = xlabel;
+    out->ylabel = ylabel;
+
+    gnuplot (out, LSM);
+
+    free(out);
     free (script_name);
     free (picture_name);
     free (LSM);
@@ -295,7 +314,18 @@ void ExpLsmCalc (char *inputname, char *outname, char *xlabel, char *ylabel, enu
     struct lsm_t *LSM = calloc (1, sizeof (struct lsm_t));
     LSM->type = EXPONENTIAL;
     LSM->U.EXP = EXP;
-    gnuplot (script_name, picture_name, "graph", xlabel, ylabel, LSM, fmt);
+
+     struct output_t *out = calloc (1, sizeof(struct output_t));
+    out->fmt = fmt;
+    out->picture_name = picture_name;
+    out->script_name = script_name;
+    out->xlabel = xlabel;
+    out->ylabel = ylabel;
+
+
+    gnuplot (out, LSM);
+
+    free(out);
     free (script_name);
     free (picture_name);
     free (LSM);
