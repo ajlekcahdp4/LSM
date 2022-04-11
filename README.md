@@ -1,12 +1,15 @@
 ![Linux](https://img.shields.io/badge/Linux-FCC624?style=for-the-badge&logo=linux&logoColor=black)
+
+[license](https://img.shields.io/github/license/{ajlekcahdp4}/{LSM}.svg)
+
 # <p align = "center">Least Square Method Calculation</p>
 ## table of contents:
 
 - [How to clone](#how-to-clone)
 - [Dependencies](#dependencies)
 - [How to use](#how-to-use)
-    - [Use as an library](#use-as-an-library)
-    - [Use as a program](#you-can-also-use-this-library-as-a-project-for-least-squares-method-using-my-main-file-in-this-case)
+    - [Use as an library](#use-as-a-library)
+    - [Use as a program](#you-can-also-use-this-library-as-a-complete-program-for-least-squares-method-calculation-and-graph-plotting)
 
     - [Input files format](#input-files-format)
 
@@ -48,10 +51,11 @@ sudo pacman -S make
 ----
 
 
-## Use as an library
+## Use as a library
 
 
-## You can also use this library as a project for least squares method using my `main` file. In this case:
+## You can also use this library as a complete program for least squares method calculation and graph plotting
+### Using my `main` file. In this case:
 To compile this program run:
 ```
 make
