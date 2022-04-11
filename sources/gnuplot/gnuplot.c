@@ -3,12 +3,12 @@
 #include <assert.h>
 #include <math.h>
 #include <string.h>
-#include "../lsm/lsm.h"
+#include "gnuplot.h"
 
 
 FILE *gnuplot_start (char *scriptname, char *picture_name);
 void gnuplot_plot (FILE *script, char *picture_name, char *title, char *xlabel, char *ylabel, struct lsm_t *LSM);
-void gnuplot_script_gen (char *script_name, char *picture_name, char *title, char *xlabel, char *ylabel, struct lsm_t *LSM);
+void gnuplot_script_gen (char *script_name, char *picture_name, char *title, char *xlabel, char *ylabel, struct lsm_t *LSM, enum format fmt);
 
 double _min (double *arr, size_t size)
 {
@@ -34,9 +34,9 @@ double _max (double *arr, size_t size)
 
 //=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
 #define MAX_CMD_SIZE 128
-void gnuplot (char *script_name, char *picture_name, char *title, char *xlabel, char *ylabel, struct lsm_t *LSM)
+void gnuplot (char *script_name, char *picture_name, char *title, char *xlabel, char *ylabel, struct lsm_t *LSM, enum format fmt)
 {
-    gnuplot_script_gen (script_name, picture_name, title, xlabel, ylabel, LSM);
+    gnuplot_script_gen (script_name, picture_name, title, xlabel, ylabel, LSM, fmt);
 
     char *chmod = calloc (MAX_CMD_SIZE, sizeof(char));
     strcat (chmod, "chmod +x ");
@@ -53,7 +53,7 @@ void gnuplot (char *script_name, char *picture_name, char *title, char *xlabel, 
 #undef MAX_CMD_SIZE
 
 
-void gnuplot_script_gen (char *script_name, char *picture_name, char *title, char *xlabel, char *ylabel, struct lsm_t *LSM)
+void gnuplot_script_gen (char *script_name, char *picture_name, char *title, char *xlabel, char *ylabel, struct lsm_t *LSM, enum format fmt)
 {
     FILE *script = gnuplot_start (script_name, picture_name);
     gnuplot_plot (script, picture_name, title, xlabel, ylabel, LSM);
@@ -66,14 +66,20 @@ FILE *gnuplot_start (char *script_name, char *picture_name)
 {
     assert (script_name);
     assert (picture_name);
+    size_t picture_name_len = strlen (picture_name);
 
     FILE *script = fopen (script_name, "w");
     fprintf (script, "#! /usr/bin/gnuplot\n");
-    fprintf (script, "set terminal png size 1000, 1200\n");
+
+    if (strcmp (picture_name + picture_name_len - 4, ".png") == 0)
+        fprintf (script, "set terminal png size 1200, 1000\n");
+    else if (strcmp (picture_name + picture_name_len - 3, ".ps") == 0)
+        fprintf (script, "set terminal postscript eps enhanced color solid\n");
+    
     fprintf (script, "set output \"%s\"\n", picture_name);
     fprintf (script, "set font \"Times, 20\"\n");
     fprintf (script, "set style line 1 lc rgb \"blue\" lw 4\n");
-    fprintf (script, "set style line 2 lc rgb \"red\" lw 4 ps 4\n");
+    fprintf (script, "set style line 2 lc rgb \"red\" lw 4 ps 3\n");
     fprintf (script, "set style line 3 lc rgb \"black\" lw 2\n");
     fprintf (script, "set grid xtics ytics\n");
     fprintf (script, "set xzeroaxis linestyle 3\n");
@@ -95,11 +101,20 @@ void gnuplot_plot (FILE *script, char *picture_name, char *title, char *xlabel, 
     int min_y  = 0;
     int max_y  = 0;
     int diff_y = 0;
+    size_t picture_name_len = strlen (picture_name);
+    size_t folder_name_len = strlen ("data/");
 
-    char *data_file_name = calloc (MAX_NAME_LEN, sizeof(char));
+    char *data_file_name = calloc (picture_name_len + folder_name_len, sizeof(char));
     assert (data_file_name);
+
     strcat (data_file_name, "data/");
-    strncat (data_file_name, picture_name, strlen(picture_name) - 4);
+    //----------------------------
+    if (strcmp (picture_name + picture_name_len - 4, ".png") == 0)
+        strncat (data_file_name, picture_name, picture_name_len - 4);
+    else if (strcmp (picture_name + picture_name_len - 3, ".ps") == 0)
+        strncat (data_file_name, picture_name, picture_name_len - 3);
+    //----------------------------
+    
     
     fprintf (script, "set xlabel \"%s\" font \"Times, 23\"\n", xlabel);
     fprintf (script, "set ylabel \"%s\" font \"Times, 23\"\n", ylabel);

@@ -1,5 +1,5 @@
-
-
+#ifndef LSM_INCLUDED
+#define LSM_INCLUDED
 struct lsm_linear
 {
     int     N;
@@ -44,15 +44,9 @@ struct lsm_t
 };
 
 
+enum format { PNG, PS };
 
-
-double Sum      (double* a, int N);
-double SumMul   (double* a, double* b, int N);
-double SumSq    (double* a, int N);
-double Get_a    (double* x, double* y, int N);
-double Get_b    (double* x, double* y, int N);
-double Get_ad   (double*x, double* y, int N);
-double Get_bd   (double*x, double* y, int N);
-void   LinearLsmCalc  (char *inputname, char *outname, char *xlabel, char *ylabel);
-void   PolinomLsmCalc (int deg, char *inputname, char *outname, char *xlabel, char *ylabel);
-void   ExpLsmCalc     (char *inputname, char *outname, char *xlabel, char *ylabel);
+void   LinearLsmCalc  (char *inputname, char *outname, char *xlabel, char *ylabel, enum format fmt);
+void   PolinomLsmCalc (int deg, char *inputname, char *outname, char *xlabel, char *ylabel, enum format fmt);
+void   ExpLsmCalc     (char *inputname, char *outname, char *xlabel, char *ylabel, enum format fmt);
+#endif

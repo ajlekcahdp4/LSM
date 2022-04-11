@@ -1,2 +1,3 @@
-void gnuplot_script_gen (char *scriptname, char *picture_name, char *title, char *xlabel, char *ylabel, struct lsm_t *LSM);
-void gnuplot (char *script_name, char *picture_name, char *title, char *xlabel, char *ylabel, struct lsm_t *LSM);
+#include "../lsm/lsm.h"
+
+void gnuplot (char *script_name, char *picture_name, char *title, char *xlabel, char *ylabel, struct lsm_t *LSM, enum format fmt);

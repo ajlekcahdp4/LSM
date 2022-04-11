@@ -10,6 +10,13 @@
 
 #define MAX_STR_SIZE 256
 
+double Sum      (double* a, int N);
+double SumMul   (double* a, double* b, int N);
+double SumSq    (double* a, int N);
+double Get_a    (double* x, double* y, int N);
+double Get_b    (double* x, double* y, int N);
+double Get_ad   (double*x, double* y, int N);
+double Get_bd   (double*x, double* y, int N);
 
 lsm_exp *ExpCalc (struct input *INP);
 
@@ -133,7 +140,7 @@ struct lsm_linear *LinearCalc (struct input *INP)
 }
 
 
-void LinearLsmCalc (char *inputname, char *outname, char *xlabel, char *ylabel)
+void LinearLsmCalc (char *inputname, char *outname, char *xlabel, char *ylabel, enum format fmt)
 {
     struct input *INP = Input(inputname);
 
@@ -151,12 +158,15 @@ void LinearLsmCalc (char *inputname, char *outname, char *xlabel, char *ylabel)
     strcat (script_name, ".sh");
 
     strcat (picture_name, outname);
-    strcat (picture_name, ".png");
+    if (fmt == PNG)
+        strcat (picture_name, ".png");
+    else
+        strcat (picture_name, ".ps");
 
     struct lsm_t *LSM = calloc (1, sizeof (struct lsm_t));
     LSM->type = LINEAR;
     LSM->U.LINE = LINE;
-    gnuplot (script_name, picture_name, "graph", xlabel, ylabel, LSM);
+    gnuplot (script_name, picture_name, "graph", xlabel, ylabel, LSM, fmt);
     
     free (script_name);
     free (picture_name);
@@ -193,7 +203,7 @@ struct lsm_pol *PolinomCalc (struct input *INP, size_t deg)
 
 
 
-void PolinomLsmCalc (int deg, char *inputname, char *outname, char *xlabel, char *ylabel)
+void PolinomLsmCalc (int deg, char *inputname, char *outname, char *xlabel, char *ylabel, enum format fmt)
 {
     struct input *INP = Input (inputname);
 
@@ -212,12 +222,16 @@ void PolinomLsmCalc (int deg, char *inputname, char *outname, char *xlabel, char
     strcat (script_name, ".sh");
 
     strcat (picture_name, outname);
-    strcat (picture_name, ".png");
+
+    if (fmt == PNG)
+        strcat (picture_name, ".png");
+    else
+        strcat (picture_name, ".ps");
 
     struct lsm_t *LSM = calloc (1, sizeof (struct lsm_t));
     LSM->type = POLINOMIAL;
     LSM->U.POL = POL;
-    gnuplot (script_name, picture_name, "graph", xlabel, ylabel, LSM);
+    gnuplot (script_name, picture_name, "graph", xlabel, ylabel, LSM, fmt);
     free (script_name);
     free (picture_name);
     free (LSM);
@@ -257,7 +271,7 @@ lsm_exp *ExpCalc (struct input *INP)
 
 
 
-void ExpLsmCalc (char *inputname, char *outname, char *xlabel, char *ylabel)
+void ExpLsmCalc (char *inputname, char *outname, char *xlabel, char *ylabel, enum format fmt)
 {
     struct input *INP = Input (inputname);
 
@@ -281,7 +295,7 @@ void ExpLsmCalc (char *inputname, char *outname, char *xlabel, char *ylabel)
     struct lsm_t *LSM = calloc (1, sizeof (struct lsm_t));
     LSM->type = EXPONENTIAL;
     LSM->U.EXP = EXP;
-    gnuplot (script_name, picture_name, "graph", xlabel, ylabel, LSM);
+    gnuplot (script_name, picture_name, "graph", xlabel, ylabel, LSM, fmt);
     free (script_name);
     free (picture_name);
     free (LSM);

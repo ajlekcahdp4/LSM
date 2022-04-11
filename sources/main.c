@@ -38,6 +38,7 @@ int main ()
     char *output = calloc (MAX_ANSWER_SIZE, sizeof(char));
     char *xlabel = calloc (MAX_ANSWER_SIZE, sizeof(char));
     char *ylabel = calloc (MAX_ANSWER_SIZE, sizeof(char));
+    char *fmt    = calloc (16, sizeof(char));
     printf ("What approximation do you want to use?\n");
     while (res != 1)
     {
@@ -55,7 +56,21 @@ int main ()
             ReadWord (xlabel);
             printf ("Enter the name of the ordinate axis\n");
             ReadWord (ylabel);
-            LinearLsmCalc (input, output, xlabel, ylabel);
+
+            printf ("Enter the format of picture output\n");
+
+            while (res != 1)
+            {
+                printf ("Please, choose \"png\" or \"ps\" (postscript)\n");
+                ReadWord (fmt);
+                res = 1;
+                if (strcmp (fmt , "png") == 0)
+                    LinearLsmCalc (input, output, xlabel, ylabel, PNG);
+                else if (strcmp(fmt, "ps") == 0)
+                    LinearLsmCalc (input, output, xlabel, ylabel, PS);
+                else
+                    res = 0;
+            }   
             res = 1;
         }
         else if (strcmp (answ, "e") == 0)
@@ -70,7 +85,20 @@ int main ()
             ReadWord (xlabel);
             printf ("Enter the name of the ordinate axis\n");
             ReadWord (ylabel);
-            ExpLsmCalc (input, output, xlabel, ylabel);
+            //----------------fmt---------------------------
+            printf ("Enter the format of picture output\n");
+            while (res != 1)
+            {
+                printf ("Please, choose \"png\" or \"ps\" (postscript)\n");
+                ReadWord (fmt);
+                res = 1;
+                if (strcmp (fmt , "png") == 0)
+                    ExpLsmCalc (input, output, xlabel, ylabel, PNG);
+                else if (strcmp(fmt, "ps") == 0)
+                    ExpLsmCalc (input, output, xlabel, ylabel, PS);
+                else
+                    res = 0;
+            }   
             res = 1;
         }
         else if (strcmp (answ, "p") == 0)
@@ -94,7 +122,20 @@ int main ()
             ReadWord (xlabel);
             printf ("Enter the name of the ordinate axis\n");
             ReadWord (ylabel);
-            PolinomLsmCalc (deg, input, output, xlabel, ylabel);
+            printf ("Enter the format of picture output\n");
+            res = 0;
+            while (res != 1)
+            {
+                printf ("Please, choose \"png\" or \"ps\" (postscript)\n");
+                ReadWord (fmt);
+                res = 1;
+                if (strcmp (fmt , "png") == 0)
+                    PolinomLsmCalc (deg, input, output, xlabel, ylabel, PNG);
+                else if (strcmp(fmt, "ps") == 0)
+                    PolinomLsmCalc (deg, input, output, xlabel, ylabel, PS);
+                else
+                    res = 0;
+            }   
             res = 1;
         }
         else
