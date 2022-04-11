@@ -60,10 +60,25 @@ The program will ask you about type of aproximation (managed linear, exponential
 You have to write measured points in a file this way:
 1) Write abscissa and ordinate values in columns like this
 
-<p align = "center">
-<img src="https://github.com/ajlekcahdp4/LSM/blob/main/examples/input-file-format.png" alt="example of input file">
-</p>
-Points near y = x^3 line (for example)
+
+
+<figure class="sign">
+    <p align = "center">
+        <img src="https://github.com/ajlekcahdp4/LSM/blob/main/examples/input-file-format.png" alt="example of input file">
+    </p>
+   <figcaption>Points near y = x^3 line (for example)</figcaption>
+</figure>
+
+
+* In this example written this points:
+
+Point number | X | Y 
+-------------|---|----
+1            |1.0|1.2
+2            |2.0|9.0
+3            |3.0|26.0
+4            |4.0|67.0
+5            |5.0|116.0
 
 2) The decimal separator should be a dot, not a comma.
 
