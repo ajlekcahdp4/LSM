@@ -430,6 +430,7 @@ void ExpLsmPrint (lsm_exp *EXP, char *outname)
 
     strcat (datafilename, "data/");
     strcat (datafilename, outname);
+    printf ("%s\n", datafilename);
 
     FILE *datafile = fopen (datafilename, "w");
     assert (datafile);
