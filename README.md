@@ -13,6 +13,7 @@
     - [Use as an library](#use-as-a-library)
     - [Use as a program](#you-can-also-use-this-library-as-a-complete-program-for-least-squares-method-calculation-and-graph-plotting)
     - [Input files format](#input-files-format)
+    - [Output format](#output-format)
 
 
 ## How to clone
@@ -136,7 +137,7 @@ And also you will get the graph of your approximation:
     </p>
 </figure>
 
-*example of the exponential graph:
+* example of the exponential graph:
 <figure class="sign">
     <p align = "center">
         <img src="https://github.com/ajlekcahdp4/LSM/blob/main/examples/example-graph-linear.png" alt="example of the linear graph">
