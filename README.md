@@ -99,49 +99,48 @@ After the program is completed, information about the calculation performed usin
 
 The output file will look like this:
 
-
+* example of the output file for polinomial approximation:
 <figure class="sign">
     <p align = "center">
         <img src="https://github.com/ajlekcahdp4/LSM/blob/main/examples/example-output-file-polinomial.png" alt="example of the output file">
     </p>
-   <figcaption>example of the output file for polinomial approximation</figcaption>
 </figure>
 
+* example of the output file for linear approximation
 <figure class="sign">
     <p align = "center">
         <img src="https://github.com/ajlekcahdp4/LSM/blob/main/examples/example-output-file-linear.png" alt="example of the output file">
     </p>
-   <figcaption>example of the output file for linear approximation</figcaption>
 </figure>
 
+* example of the output file for exponential approximation
 <figure class="sign">
     <p align = "center">
         <img src="https://github.com/ajlekcahdp4/LSM/blob/main/examples/example-output-file-exponential.png" alt="example of the output file">
     </p>
-   <figcaption>example of the output file for exponential approximation</figcaption>
 </figure>
 
 And also you will get the graph of your approximation:
 
+* example of the polinomial graph
 <figure class="sign">
     <p align = "center">
         <img src="https://github.com/ajlekcahdp4/LSM/blob/main/examples/example-graph-polinomial.png" alt="example of the polinomial graph">
     </p>
-   <figcaption>example of the graph for polinomial approximation</figcaption>
 </figure>
 
+* example of the linear graph
 <figure class="sign">
     <p align = "center">
         <img src="https://github.com/ajlekcahdp4/LSM/blob/main/examples/example-graph-exponential.png" alt="example of the exponential graph">
     </p>
-   <figcaption>example of the graph for exponential approximation</figcaption>
 </figure>
 
+*example of the exponential graph
 <figure class="sign">
     <p align = "center">
         <img src="https://github.com/ajlekcahdp4/LSM/blob/main/examples/example-graph-linear.png" alt="example of the linear graph">
     </p>
-   <figcaption>example of the graph for linear approximation</figcaption>
 </figure>
 
 
