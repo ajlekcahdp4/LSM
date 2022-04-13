@@ -106,14 +106,14 @@ The output file will look like this:
     </p>
 </figure>
 
-* example of the output file for linear approximation
+* example of the output file for linear approximation:
 <figure class="sign">
     <p align = "center">
         <img src="https://github.com/ajlekcahdp4/LSM/blob/main/examples/example-output-file-linear.png" alt="example of the output file">
     </p>
 </figure>
 
-* example of the output file for exponential approximation
+* example of the output file for exponential approximation:
 <figure class="sign">
     <p align = "center">
         <img src="https://github.com/ajlekcahdp4/LSM/blob/main/examples/example-output-file-exponential.png" alt="example of the output file">
@@ -122,21 +122,21 @@ The output file will look like this:
 
 And also you will get the graph of your approximation:
 
-* example of the polinomial graph
+* example of the polinomial graph:
 <figure class="sign">
     <p align = "center">
         <img src="https://github.com/ajlekcahdp4/LSM/blob/main/examples/example-graph-polinomial.png" alt="example of the polinomial graph">
     </p>
 </figure>
 
-* example of the linear graph
+* example of the linear graph:
 <figure class="sign">
     <p align = "center">
         <img src="https://github.com/ajlekcahdp4/LSM/blob/main/examples/example-graph-exponential.png" alt="example of the exponential graph">
     </p>
 </figure>
 
-*example of the exponential graph
+*example of the exponential graph:
 <figure class="sign">
     <p align = "center">
         <img src="https://github.com/ajlekcahdp4/LSM/blob/main/examples/example-graph-linear.png" alt="example of the linear graph">
