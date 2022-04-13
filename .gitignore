@@ -3,7 +3,7 @@
 *.o
 *.out
 vgcore.*
-*.ps
+/*.ps
 /*.png
 1.res.sh
 data/
