@@ -14,6 +14,7 @@
     - [Use as a program](#you-can-also-use-this-library-as-a-complete-program-for-least-squares-method-calculation-and-graph-plotting)
     - [Input files format](#input-files-format)
     - [Output format](#output-format)
+- [Feedback](#feedback)
 
 
 ## How to clone
@@ -145,4 +146,10 @@ And also you will get the graph of your approximation:
 </figure>
 
 
+# Feedback
+* If you faced some bugs with this program - please, create a bug report in the [issues](https://github.com/ajlekcahdp4/LSM/issues) and I'll try to help you.
+
+*  If you have an idea how to improve this project - please, write it in [issue](https://github.com/ajlekcahdp4/LSM/issues) or fork this repository, write code and create pull request.
+
+### If you found my program interesting or usefull please Give me a star :star
 
