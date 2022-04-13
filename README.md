@@ -151,5 +151,5 @@ And also you will get the graph of your approximation:
 
 *  If you have an idea how to improve this project - please, write it in [issue](https://github.com/ajlekcahdp4/LSM/issues) or fork this repository, write code and create pull request.
 
-### If you found my program interesting or usefull please Give me a star :star
+### If you found my program interesting or usefull please Give me a star 🌟
 
