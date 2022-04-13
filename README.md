@@ -49,12 +49,11 @@ sudo pacman -S make
 ```
 
 # How to use
-----
 
 
 ## Use as a library
 
-
+----------------------
 ## You can also use this library as a complete program for least squares method calculation and graph plotting
 ### Using my `main` file. In this case:
 To compile this program run:
@@ -77,13 +76,13 @@ You have to write measured points in a file this way:
 
 <figure class="sign">
     <p align = "center">
-        <img src="https://github.com/ajlekcahdp4/LSM/blob/main/examples/input-file-format.png" alt="example of input file">
+        <img src="https://github.com/ajlekcahdp4/LSM/blob/main/examples/input-file-format.png" alt="example of the input file">
     </p>
    <figcaption>Points near y = x^3 line (for example)</figcaption>
 </figure>
 
 
-* In this example written this points:
+* In this example was used this points:
 
 Point number | X | Y 
 -------------|---|----
@@ -92,6 +91,58 @@ Point number | X | Y
 3            |3.0|26.0
 4            |4.0|67.0
 5            |5.0|116.0
+
+
+## output format
+After the program is completed, information about the calculation performed using the least squares method will be written to the file that you specified as output. 
+* If the file did not exist, it will be created
+
+The output file will look like this:
+
+
+<figure class="sign">
+    <p align = "center">
+        <img src="https://github.com/ajlekcahdp4/LSM/blob/main/examples/example-output-file-polinomial.png" alt="example of the output file">
+    </p>
+   <figcaption>example of the output file for polinomial approximation</figcaption>
+</figure>
+
+<figure class="sign">
+    <p align = "center">
+        <img src="https://github.com/ajlekcahdp4/LSM/blob/main/examples/example-output-file-linear.png" alt="example of the output file">
+    </p>
+   <figcaption>example of the output file for linear approximation</figcaption>
+</figure>
+
+<figure class="sign">
+    <p align = "center">
+        <img src="https://github.com/ajlekcahdp4/LSM/blob/main/examples/example-output-file-exponential.png" alt="example of the output file">
+    </p>
+   <figcaption>example of the output file for exponential approximation</figcaption>
+</figure>
+
+And also you will get the graph of your approximation:
+
+<figure class="sign">
+    <p align = "center">
+        <img src="https://github.com/ajlekcahdp4/LSM/blob/main/examples/example-graph-polinomial.ps" alt="example of the polinomial graph">
+    </p>
+   <figcaption>example of the graph for polinomial approximation</figcaption>
+</figure>
+
+<figure class="sign">
+    <p align = "center">
+        <img src="https://github.com/ajlekcahdp4/LSM/blob/main/examples/example-graph-exponential.ps" alt="example of the exponential graph">
+    </p>
+   <figcaption>example of the graph for exponential approximation</figcaption>
+</figure>
+
+<figure class="sign">
+    <p align = "center">
+        <img src="https://github.com/ajlekcahdp4/LSM/blob/main/examples/example-graph-linear.ps" alt="example of the linear graph">
+    </p>
+   <figcaption>example of the graph for linear approximation</figcaption>
+</figure>
 
 
 
