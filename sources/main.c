@@ -33,6 +33,7 @@ int ReadWord (char *buf)
 int main ()
 {
     int res = 0;
+    int calc_res = 0;
     char *answ   = calloc (MAX_ANSWER_SIZE, sizeof(char));
     char *input  = calloc (MAX_ANSWER_SIZE, sizeof(char));
     char *output = calloc (MAX_ANSWER_SIZE, sizeof(char));
@@ -52,16 +53,16 @@ int main ()
             printf ("Enter output file name: ");
             scanf ("%s", output);
             ClearInputBuffer ();
-            printf ("Enter the name of the abscissa axis\n");
+            printf ("Enter the name of the abscissa axis: ");
             ReadWord (xlabel);
-            printf ("Enter the name of the ordinate axis\n");
+            printf ("Enter the name of the ordinate axis: ");
             ReadWord (ylabel);
 
             printf ("Enter the format of picture output\n");
 
             while (res != 1)
             {
-                printf ("Please, choose \"png\" or \"ps\" (postscript)\n");
+                printf ("Please, choose \"png\" or \"ps\" (postscript): ");
                 ReadWord (fmt);
                 res = 1;
                 if (strcmp (fmt , "png") == 0)
@@ -81,15 +82,15 @@ int main ()
             printf ("Enter output file name: ");
             scanf ("%s", output);
             ClearInputBuffer ();
-            printf ("Enter the name of the abscissa axis\n");
+            printf ("Enter the name of the abscissa axis: ");
             ReadWord (xlabel);
-            printf ("Enter the name of the ordinate axis\n");
+            printf ("Enter the name of the ordinate axis: ");
             ReadWord (ylabel);
             //----------------fmt---------------------------
             printf ("Enter the format of picture output\n");
             while (res != 1)
             {
-                printf ("Please, choose \"png\" or \"ps\" (postscript)\n");
+                printf ("Please, choose \"png\" or \"ps\" (postscript): ");
                 ReadWord (fmt);
                 res = 1;
                 if (strcmp (fmt , "png") == 0)
@@ -106,7 +107,7 @@ int main ()
             size_t deg = 0;
             while (res != 1)
             {
-                printf ("What degree of polinom do you want?\n");
+                printf ("What degree of polinom do you want?: ");
                 res = scanf ("%lu", &deg);
                 if (res == 0)
                     printf ("Please, enter the positive integer number\n");
@@ -118,21 +119,21 @@ int main ()
             printf ("Enter output file name: ");
             scanf ("%s", output);
             ClearInputBuffer ();
-            printf ("Enter the name of the abscissa axis\n");
+            printf ("Enter the name of the abscissa axis: ");
             ReadWord (xlabel);
-            printf ("Enter the name of the ordinate axis\n");
+            printf ("Enter the name of the ordinate axis: ");
             ReadWord (ylabel);
             printf ("Enter the format of picture output\n");
             res = 0;
-            while (res != 1)
+            while (res != 1 && calc_res != 0)
             {
-                printf ("Please, choose \"png\" or \"ps\" (postscript)\n");
+                printf ("Please, choose \"png\" or \"ps\" (postscript): ");
                 ReadWord (fmt);
                 res = 1;
                 if (strcmp (fmt , "png") == 0)
-                    PolinomLsmCalc (deg, input, output, xlabel, ylabel, PNG);
+                    calc_res = PolinomLsmCalc (deg, input, output, xlabel, ylabel, PNG);
                 else if (strcmp(fmt, "ps") == 0)
-                    PolinomLsmCalc (deg, input, output, xlabel, ylabel, PS);
+                    calc_res = PolinomLsmCalc (deg, input, output, xlabel, ylabel, PS);
                 else
                     res = 0;
             }   

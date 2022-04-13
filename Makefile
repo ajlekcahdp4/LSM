@@ -19,4 +19,4 @@ GNUPLOT_T:
 clean:
 	rm -rf *.o *.out temps run vgcore.*
 clean_data:
-	rm -rf *.dat *.res *.ps *.dat *.sh
+	rm -rf *.dat *.res /*.ps *.sh /*.png

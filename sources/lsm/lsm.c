@@ -49,7 +49,14 @@ struct input *Input (char *inputname)
     INP->y = calloc (START_SIZE, sizeof(double));
     
     FILE* inputfile = fopen (inputname, "r");
-    assert (inputfile);
+    if (inputfile == NULL)
+    {
+        fprintf (stderr, "ERROR: input file does not exists\n");
+        free (INP->x);
+        free (INP->y);
+        free (INP);
+        return NULL;
+    }
 
     while (res == 2)
     {
@@ -140,9 +147,11 @@ struct lsm_linear *LinearCalc (struct input *INP)
 }
 
 
-void LinearLsmCalc (char *inputname, char *outname, char *xlabel, char *ylabel, enum format fmt)
+int LinearLsmCalc (char *inputname, char *outname, char *xlabel, char *ylabel, enum format fmt)
 {
     struct input *INP = Input(inputname);
+    if (INP == NULL)
+        return ERROR_INPUT_FILE_DOES_NOT_EXISTS;
 
     struct lsm_linear *LINE = LinearCalc (INP);
     free (INP->x);
@@ -184,6 +193,7 @@ void LinearLsmCalc (char *inputname, char *outname, char *xlabel, char *ylabel, 
     free (LINE->x);
     free (LINE->y);
     free (LINE);
+    return 0;
 }
 
 //==================================================================================================
@@ -211,9 +221,12 @@ struct lsm_pol *PolinomCalc (struct input *INP, size_t deg)
 
 
 
-void PolinomLsmCalc (int deg, char *inputname, char *outname, char *xlabel, char *ylabel, enum format fmt)
+int PolinomLsmCalc (int deg, char *inputname, char *outname, char *xlabel, char *ylabel, enum format fmt)
 {
     struct input *INP = Input (inputname);
+    
+    if (INP == NULL)
+        return ERROR_INPUT_FILE_DOES_NOT_EXISTS;
 
     struct lsm_pol *POL = PolinomCalc (INP, deg);
     free (INP->x);
@@ -258,6 +271,7 @@ void PolinomLsmCalc (int deg, char *inputname, char *outname, char *xlabel, char
     free (POL->y);
     free (POL->a);
     free (POL);
+    return 0;
 }
 //==================================================================================================
 //===========================================EXP_LSM================================================
@@ -288,10 +302,11 @@ lsm_exp *ExpCalc (struct input *INP)
 }
 
 
-
-void ExpLsmCalc (char *inputname, char *outname, char *xlabel, char *ylabel, enum format fmt)
+int ExpLsmCalc (char *inputname, char *outname, char *xlabel, char *ylabel, enum format fmt)
 {
     struct input *INP = Input (inputname);
+        if (INP == NULL)
+        return ERROR_INPUT_FILE_DOES_NOT_EXISTS;
 
     lsm_exp *EXP = ExpCalc (INP);
     
@@ -336,6 +351,7 @@ void ExpLsmCalc (char *inputname, char *outname, char *xlabel, char *ylabel, enu
     free (EXP->x);
     free (EXP->y);
     free (EXP);
+    return 0;
 }
 
 //==================================================================================================

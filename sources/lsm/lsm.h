@@ -46,7 +46,9 @@ struct lsm_t
 
 enum format { PNG, PS };
 
-void   LinearLsmCalc  (char *inputname, char *outname, char *xlabel, char *ylabel, enum format fmt);
-void   PolinomLsmCalc (int deg, char *inputname, char *outname, char *xlabel, char *ylabel, enum format fmt);
-void   ExpLsmCalc     (char *inputname, char *outname, char *xlabel, char *ylabel, enum format fmt);
+enum ERRORS { NO_ERROR, ERROR_INPUT_FILE_DOES_NOT_EXISTS };
+
+int LinearLsmCalc  (char *inputname, char *outname, char *xlabel, char *ylabel, enum format fmt);
+int PolinomLsmCalc (int deg, char *inputname, char *outname, char *xlabel, char *ylabel, enum format fmt);
+int ExpLsmCalc     (char *inputname, char *outname, char *xlabel, char *ylabel, enum format fmt);
 #endif
