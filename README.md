@@ -125,21 +125,21 @@ And also you will get the graph of your approximation:
 
 <figure class="sign">
     <p align = "center">
-        <img src="https://github.com/ajlekcahdp4/LSM/blob/main/examples/example-graph-polinomial.ps" alt="example of the polinomial graph">
+        <img src="https://github.com/ajlekcahdp4/LSM/blob/main/examples/example-graph-polinomial.png" alt="example of the polinomial graph">
     </p>
    <figcaption>example of the graph for polinomial approximation</figcaption>
 </figure>
 
 <figure class="sign">
     <p align = "center">
-        <img src="https://github.com/ajlekcahdp4/LSM/blob/main/examples/example-graph-exponential.ps" alt="example of the exponential graph">
+        <img src="https://github.com/ajlekcahdp4/LSM/blob/main/examples/example-graph-exponential.png" alt="example of the exponential graph">
     </p>
    <figcaption>example of the graph for exponential approximation</figcaption>
 </figure>
 
 <figure class="sign">
     <p align = "center">
-        <img src="https://github.com/ajlekcahdp4/LSM/blob/main/examples/example-graph-linear.ps" alt="example of the linear graph">
+        <img src="https://github.com/ajlekcahdp4/LSM/blob/main/examples/example-graph-linear.png" alt="example of the linear graph">
     </p>
    <figcaption>example of the graph for linear approximation</figcaption>
 </figure>
