@@ -130,14 +130,14 @@ And also you will get the graph of your approximation:
     </p>
 </figure>
 
-* example of the linear graph:
+* example of the exponential graph:
 <figure class="sign">
     <p align = "center">
         <img src="https://github.com/ajlekcahdp4/LSM/blob/main/examples/example-graph-exponential.png" alt="example of the exponential graph">
     </p>
 </figure>
 
-* example of the exponential graph:
+* example of the linear graph:
 <figure class="sign">
     <p align = "center">
         <img src="https://github.com/ajlekcahdp4/LSM/blob/main/examples/example-graph-linear.png" alt="example of the linear graph">
