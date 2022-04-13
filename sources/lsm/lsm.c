@@ -304,11 +304,15 @@ void ExpLsmCalc (char *inputname, char *outname, char *xlabel, char *ylabel, enu
     char *script_name = calloc (MAX_STR_SIZE, sizeof(char));
     char *picture_name = calloc (MAX_STR_SIZE, sizeof(char));
 
+
     strcat (script_name, outname);
     strcat (script_name, ".sh");
 
     strcat (picture_name, outname);
-    strcat (picture_name, ".png");
+   if (fmt == PNG)
+        strcat (picture_name, ".png");
+    else
+        strcat (picture_name, ".ps");
 
     struct lsm_t *LSM = calloc (1, sizeof (struct lsm_t));
     LSM->type = EXPONENTIAL;
