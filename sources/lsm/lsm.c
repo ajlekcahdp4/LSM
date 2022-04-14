@@ -396,7 +396,7 @@ void PolinomLsmPrint (struct lsm_pol *POL, size_t deg, char *outname)
         fprintf (out, "%-6.4g %-6.4g\n", POL->x[i], POL->y[i]);
     fprintf (out, "\n\n");
 
-    fprintf (out, "Coefficients of the polinom (from zero-coefficient to %d-coefficiient):\n", POL->N);
+    fprintf (out, "Coefficients of the polinom (from zero-coefficient to %d-coefficiient):\n", deg);
     for (size_t i = 0; i <= deg; i++)
         fprintf (out, "%.4g ", POL->a[i]);
     fprintf (out, "\n");
