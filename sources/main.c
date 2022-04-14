@@ -45,6 +45,7 @@ int main ()
     {
         printf ("Please, Answer \'l\' - linear, \'e\' - exponential or \'p\' - polinomial\n");
         scanf ("%s", answ);
+        ClearInputBuffer ();
         if (strcmp (answ, "l") == 0)
         {
             printf ("Enter input file name: ");
@@ -60,15 +61,15 @@ int main ()
 
             printf ("Enter the format of picture output\n");
 
-            while (res != 1)
+            while (res != 1 || calc_res != 0)
             {
                 printf ("Please, choose \"png\" or \"ps\" (postscript): ");
                 ReadWord (fmt);
                 res = 1;
                 if (strcmp (fmt , "png") == 0)
-                    LinearLsmCalc (input, output, xlabel, ylabel, PNG);
+                    calc_res = LinearLsmCalc (input, output, xlabel, ylabel, PNG);
                 else if (strcmp(fmt, "ps") == 0)
-                    LinearLsmCalc (input, output, xlabel, ylabel, PS);
+                    calc_res = LinearLsmCalc (input, output, xlabel, ylabel, PS);
                 else
                     res = 0;
             }   
@@ -88,15 +89,15 @@ int main ()
             ReadWord (ylabel);
             //----------------fmt---------------------------
             printf ("Enter the format of picture output\n");
-            while (res != 1)
+            while (res != 1 || calc_res != 0)
             {
                 printf ("Please, choose \"png\" or \"ps\" (postscript): ");
                 ReadWord (fmt);
                 res = 1;
                 if (strcmp (fmt , "png") == 0)
-                    ExpLsmCalc (input, output, xlabel, ylabel, PNG);
+                    calc_res = ExpLsmCalc (input, output, xlabel, ylabel, PNG);
                 else if (strcmp(fmt, "ps") == 0)
-                    ExpLsmCalc (input, output, xlabel, ylabel, PS);
+                    calc_res = ExpLsmCalc (input, output, xlabel, ylabel, PS);
                 else
                     res = 0;
             }   
@@ -125,7 +126,7 @@ int main ()
             ReadWord (ylabel);
             printf ("Enter the format of picture output\n");
             res = 0;
-            while (res != 1 && calc_res != 0)
+            while (res != 1 || calc_res != 0)
             {
                 printf ("Please, choose \"png\" or \"ps\" (postscript): ");
                 ReadWord (fmt);

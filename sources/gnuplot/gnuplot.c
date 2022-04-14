@@ -149,9 +149,9 @@ void gnuplot_plot (FILE *script, struct output_t *out, char *input_name, struct 
         fprintf (script, "set xrange [%lf : %lf]\n", min_x - 0.2*diff_x, max_x + 0.2*diff_x);
         fprintf (script, "set yrange [%lf : %lf]\n", min_y - 0.2*diff_y, max_y + 0.2*diff_y);
         
-        fprintf (script, "plot %.2lf ", LSM->U.POL->a[0]);
+        fprintf (script, "plot %lf ", LSM->U.POL->a[0]);
         for (int i = 1; i <= LSM->U.POL->deg; i++)
-            fprintf (script, "%+.2lf * x**%d ", LSM->U.POL->a[i], i);
+            fprintf (script, "%+e * x**%d ", LSM->U.POL->a[i], i);
         fprintf (script, "linestyle 1, \"%s\" with points linestyle 2 notitle\n", input_name);
         break;
     }
