@@ -93,12 +93,12 @@ void gnuplot_plot (FILE *script, struct output_t *out, char *input_name, struct 
     assert(out);
 
     int N      = 0;
-    int min_x  = 0;
-    int max_x  = 0;
-    int diff_x = 0;
-    int min_y  = 0;
-    int max_y  = 0;
-    int diff_y = 0;
+    double min_x  = 0;
+    double max_x  = 0;
+    double diff_x = 0;
+    double min_y  = 0;
+    double max_y  = 0;
+    double diff_y = 0;
 
 
     
@@ -118,8 +118,8 @@ void gnuplot_plot (FILE *script, struct output_t *out, char *input_name, struct 
         min_y  = _min (LSM->U.LINE->y, N);
         diff_y = max_y - min_y;
 
-        fprintf (script, "set xrange [%lf : %lf]\n", min_x - 0.2*diff_x, max_x + 0.2*diff_x);
-        fprintf (script, "set yrange [%lf : %lf]\n", min_y - 0.2*diff_y, max_y + 0.2*diff_y);
+        fprintf (script, "set xrange [%lf : %lf]\n", min_x - 0.1*diff_x, max_x + 0.1*diff_x);
+        fprintf (script, "set yrange [%lf : %lf]\n", min_y - 0.1*diff_y, max_y + 0.1*diff_y);
         fprintf (script, "plot %lf * x %+lf linestyle 1, \"%s\" with points linestyle 2 notitle\n", LSM->U.LINE->a, LSM->U.LINE->b, input_name);
         break;
     case EXPONENTIAL:
@@ -132,8 +132,8 @@ void gnuplot_plot (FILE *script, struct output_t *out, char *input_name, struct 
         min_y  = exp (_min (LSM->U.EXP->y, N));
         diff_y = max_y - min_y;
 
-        fprintf (script, "set xrange [%lf : %lf]\n", min_x - 0.2*diff_x, max_x + 0.2*diff_x);
-        fprintf (script, "set yrange [%lf : %lf]\n", min_y - 0.2*diff_y, max_y + 0.2*diff_y);
+        fprintf (script, "set xrange [%lf : %lf]\n", min_x - 0.1*diff_x, max_x + 0.1*diff_x);
+        fprintf (script, "set yrange [%lf : %lf]\n", min_y - 0.1*diff_y, max_y + 0.1*diff_y);
         fprintf (script, "plot exp (%lf * x %+lf) linestyle 1, \"%s\" with points linestyle 2 notitle\n", LSM->U.EXP->a, LSM->U.EXP->b, input_name);
         break;
     case POLINOMIAL:
@@ -146,8 +146,8 @@ void gnuplot_plot (FILE *script, struct output_t *out, char *input_name, struct 
         min_y  = _min (LSM->U.POL->y, N);
         diff_y = max_y - min_y;
 
-        fprintf (script, "set xrange [%lf : %lf]\n", min_x - 0.2*diff_x, max_x + 0.2*diff_x);
-        fprintf (script, "set yrange [%lf : %lf]\n", min_y - 0.2*diff_y, max_y + 0.2*diff_y);
+        fprintf (script, "set xrange [%lf : %lf]\n", min_x - 0.1*diff_x, max_x + 0.1*diff_x);
+        fprintf (script, "set yrange [%lf : %lf]\n", min_y - 0.1*diff_y, max_y + 0.1*diff_y);
         
         fprintf (script, "plot %lf ", LSM->U.POL->a[0]);
         for (int i = 1; i <= LSM->U.POL->deg; i++)

@@ -37,7 +37,7 @@ double *InputRow (FILE *file, int N)
     return row;
 }
 
-#define START_SIZE 32
+#define START_SIZE 256
 struct input *Input (char *inputname)
 {
     int res  = 2;

@@ -8,3 +8,4 @@
 - dynamic accuracy in output
 - direct proportionality
 - varargs functions
+- Realloc in input lsm.c
