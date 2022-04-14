@@ -103,8 +103,8 @@ void gnuplot_plot (FILE *script, struct output_t *out, char *input_name, struct 
 
     
     
-    fprintf (script, "set xlabel \"%s\" font \"Times, 23\"\n", out->xlabel);
-    fprintf (script, "set ylabel \"%s\" font \"Times, 23\"\n", out->ylabel);
+    fprintf (script, "set xlabel \"%s\" font \"Times, 20\"\n", out->xlabel);
+    fprintf (script, "set ylabel \"%s\" font \"Times, 20\"\n", out->ylabel);
 
     switch (LSM->type)
     {
