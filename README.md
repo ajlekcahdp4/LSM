@@ -145,6 +145,39 @@ And also you will get the graph of your approximation:
     </p>
 </figure>
 
+* My program also can managed hight-levels polinoms. In the example down below I approximate this points:
+
+ X  | Y
+----|----
+1.0 | 2.0
+2.0 | 2.0
+3.0 | 3.0
+4.0 | 5.0
+5.0 | 5.0
+6.0 | 6.0
+7.0 | 8.0
+8.0 | 9.0
+9.0 | 10.0
+10.0| 12.0
+11.0| 10.0
+12.0| 12.0
+13.0| 12.0
+14.0| 14.0
+15.0| 17.0
+16.0| 16.0
+17.0| 18.0
+18.0| 17.0
+19.0| 19.0
+20.0| 19.0
+
+with the 8-degree polinom.
+
+<figure class="sign">
+    <p align = "center">
+        <img src="https://github.com/ajlekcahdp4/LSM/blob/main/examples/hight-degree-polinom.png" alt="example of the hight-degree polinom">
+    </p>
+</figure>
+
 
 # Feedback
 * If you faced some bugs with this program - please, create a bug report in the [issues](https://github.com/ajlekcahdp4/LSM/issues) and I'll try to help you.
