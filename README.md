@@ -54,7 +54,7 @@ sudo pacman -S make
 
 
 ## Use as a library
-
+### In development...
 ----------------------
 ## You can also use this library as a complete program for least squares method calculation and graph plotting
 ### Using my `main` file. In this case:
