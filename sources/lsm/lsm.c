@@ -37,16 +37,26 @@ double *InputRow (FILE *file, int N)
     return row;
 }
 
-#define START_SIZE 256
+
+struct input *InputResize (struct input *INP, int capacity)
+{
+    INP->x = realloc (INP->x, capacity * sizeof(double));
+    INP->y = realloc (INP->y, capacity * sizeof(double));
+    return INP;
+}
+
+#define START_SIZE ((int)32)
+
 struct input *Input (char *inputname)
 {
     int res  = 2;
     int size = 0;
+    int capacity = START_SIZE;
     double x = NAN;
     double y = NAN;
     struct input * INP = calloc (1, sizeof (struct input));
-    INP->x = calloc (START_SIZE, sizeof(double));
-    INP->y = calloc (START_SIZE, sizeof(double));
+    INP->x = calloc (capacity, sizeof(double));
+    INP->y = calloc (capacity, sizeof(double));
     
     FILE* inputfile = fopen (inputname, "r");
     if (inputfile == NULL)
@@ -60,6 +70,11 @@ struct input *Input (char *inputname)
 
     while (res == 2)
     {
+        if (size == capacity)
+        {
+            capacity *= 2;
+            INP = InputResize (INP, capacity);
+        }
         res = fscanf (inputfile, "%lf %lf", &x, &y);
         INP->x[size] = x;
         INP->y[size] = y;
