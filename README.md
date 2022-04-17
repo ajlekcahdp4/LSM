@@ -38,17 +38,6 @@ Or by pacman (On Arch and Manjaro linux):
 sudo pacman -S gnuplot
 ```
 * If you face some problem with `libQt5Core.so.5` use this [reccomendations](https://stackoverflow.com/questions/63627955/cant-load-shared-library-libqt5core-so-5).
-### 2) [make](https://www.gnu.org/software/make/)
-
-You can install make by apt / apt-get:
-```
-sudo apt install make
-```
-
-Or by pacman (On Arch and Manjaro linux):
-```
-sudo pacman -S make
-```
 
 # How to use
 
