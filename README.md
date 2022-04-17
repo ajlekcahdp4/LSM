@@ -67,7 +67,7 @@ You have to write measured points in a file this way:
 
 <figure class="sign">
     <p align = "center">
-        <img src="https://github.com/ajlekcahdp4/LSM/blob/main/examples/input-file-format.png" alt="example of the input file">
+        <img src="examples/input-file-format.png" alt="example of the input file">
     </p>
    <figcaption>Points near y = x^3 line (for example)</figcaption>
 </figure>
@@ -93,21 +93,21 @@ The output file will look like this:
 * example of the output file for polinomial approximation:
 <figure class="sign">
     <p align = "center">
-        <img src="https://github.com/ajlekcahdp4/LSM/blob/main/examples/example-output-file-polinomial.png" alt="example of the output file">
+        <img src="examples/example-output-file-polinomial.png" alt="example of the output file">
     </p>
 </figure>
 
 * example of the output file for linear approximation:
 <figure class="sign">
     <p align = "center">
-        <img src="https://github.com/ajlekcahdp4/LSM/blob/main/examples/example-output-file-linear.png" alt="example of the output file">
+        <img src="examples/example-output-file-linear.png" alt="example of the output file">
     </p>
 </figure>
 
 * example of the output file for exponential approximation:
 <figure class="sign">
     <p align = "center">
-        <img src="https://github.com/ajlekcahdp4/LSM/blob/main/examples/example-output-file-exponential.png" alt="example of the output file">
+        <img src="examples/example-output-file-exponential.png" alt="example of the output file">
     </p>
 </figure>
 
@@ -116,21 +116,21 @@ And also you will get the graph of your approximation:
 * example of the polinomial graph:
 <figure class="sign">
     <p align = "center">
-        <img src="https://github.com/ajlekcahdp4/LSM/blob/main/examples/example-graph-polinomial.png" alt="example of the polinomial graph">
+        <img src="examples/example-graph-polinomial.png" alt="example of the polinomial graph">
     </p>
 </figure>
 
 * example of the exponential graph:
 <figure class="sign">
     <p align = "center">
-        <img src="https://github.com/ajlekcahdp4/LSM/blob/main/examples/example-graph-exponential.png" alt="example of the exponential graph">
+        <img src="examples/example-graph-exponential.png" alt="example of the exponential graph">
     </p>
 </figure>
 
 * example of the linear graph:
 <figure class="sign">
     <p align = "center">
-        <img src="https://github.com/ajlekcahdp4/LSM/blob/main/examples/example-graph-linear.png" alt="example of the linear graph">
+        <img src="examples/example-graph-linear.png" alt="example of the linear graph">
     </p>
 </figure>
 
@@ -163,7 +163,7 @@ with the 8-degree polinom.
 
 <figure class="sign">
     <p align = "center">
-        <img src="https://github.com/ajlekcahdp4/LSM/blob/main/examples/hight-degree-polinom.png" alt="example of the hight-degree polinom">
+        <img src="examples/hight-degree-polinom.png" alt="example of the hight-degree polinom">
     </p>
 </figure>
 
