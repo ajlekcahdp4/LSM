@@ -1,4 +1,4 @@
-#include "../lsm/lsm.h"
+#include "lsm.h"
 
 struct output_t
 {

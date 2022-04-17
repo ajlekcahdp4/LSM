@@ -1,8 +1,12 @@
 # new makefile
 
-CC = gcc
+CC ?= gcc
 
 CFLAGS ?= -Wall -Werror -Wextra -O3
+
+COMMONINC = -I./include
+
+CFLAGS += $(COMMONINC)
 
 SRCDIR = ./sources/
 BUILDDIR = ./build/

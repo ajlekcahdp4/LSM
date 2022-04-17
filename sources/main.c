@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "lsm/lsm.h"
+#include "lsm.h"
 
 #define MAX_ANSWER_SIZE 256
 

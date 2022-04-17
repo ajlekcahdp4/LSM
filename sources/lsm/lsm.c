@@ -4,8 +4,8 @@
 #include <assert.h>
 #include <math.h>
 #include "lsm.h"
-#include "../gnuplot/gnuplot.h"
-#include "../SLE/SLE.h"
+#include "gnuplot.h"
+#include "SLE.h"
 
 
 #define MAX_STR_SIZE 256
