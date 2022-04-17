@@ -8,3 +8,4 @@ vgcore.*
 1.res.sh
 data/
 run
+*.d

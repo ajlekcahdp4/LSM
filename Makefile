@@ -1,22 +1,52 @@
+# new makefile
+
 CC = gcc
-CFLAGS = -Wall -Werror -Wextra
-SRC_PATH = sources/
+
+CFLAGS ?= -Wall -Werror -Wextra -O3
+
+SRCDIR = ./sources/
+BUILDDIR = ./build/
+
 DEBUG = -g
 
-all: MAIN_T LSM_T SLE_T GNUPLOT_T
-	$(CC) $(CFLAGS) $(DEBUG) temps/main.o temps/lsm.o temps/SLE.o temps/gnuplot.o -lm -o run
-	rm -rf temps
-MAIN_T:
-	chmod +x $(SRC_PATH)scripts/mkdir.sh
-	./$(SRC_PATH)scripts/mkdir.sh temps
-	$(CC) -c $(CFLAGS) $(DEBUG) $(SRC_PATH)main.c -o temps/main.o
-LSM_T:
-	$(CC) -c $(CFLAGS) $(DEBUG) $(SRC_PATH)lsm/lsm.c -o temps/lsm.o
-SLE_T:
-	$(CC) -c $(CFLAGS) $(DEBUG) $(SRC_PATH)SLE/SLE.c -o temps/SLE.o
-GNUPLOT_T:
-	$(CC) -c $(CFLAGS) $(DEBUG) $(SRC_PATH)gnuplot/gnuplot.c -o temps/gnuplot.o
+CFLAGS += $(DEBUG)
+
+CSRCS = $(SRCDIR)main.c     		\
+		$(SRCDIR)lsm/lsm.c  		\
+		$(SRCDIR)SLE/SLE.c  		\
+		$(SRCDIR)gnuplot/gnuplot.c
+
+
+SUBS := $(CSRCS)
+SUBS := $(subst $(SRCDIR), $(BUILDDIR), $(SUBS))
+
+
+OBJS = $(SUBS:.c=.o)
+DEPS = $(SUBS:.c=.d)
+
+
+
+all: $(OBJS)
+	$(CC) $(CFLAGS) $(OBJS) -o run -lm
+
+$(BUILDDIR)%.o: $(SRCDIR)%.c
+	@mkdir -p $(dir $@)
+	$(CC) $(CFLAGS) $< -c -o $@
+
+
+
+$(BUILDDIR)%.d: $(SRCDIR)%.c
+	@echo "Colecting deps for $< ..."
+	@mkdir -p $(dir $@)
+	@$(CC) -E $(CFLAGS) $< -MM -MT $(@:.d=.o) > $@
+
+
+include $(DEPS)
+
+.PHONY: clean
 clean:
-	rm -rf *.o *.out temps run vgcore.*
+	rm -rf $(OBJS) $(DEPS) *.out temps run vgcore.*
+
+.PHONY: clean_data
 clean_data:
 	rm -rf *.dat *.res /*.ps *.sh /*.png
