@@ -27,7 +27,7 @@ DEPS = $(SUBS:.c=.d)
 
 
 all: $(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) -o run -lm
+	$(CC) $(CFLAGS) $^ -o run -lm
 
 $(BUILDDIR)%.o: $(SRCDIR)%.c
 	@mkdir -p $(dir $@)
