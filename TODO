@@ -3,8 +3,9 @@
 - larger font                                   ( done 10.04 )
 - png support right way                         ( done 11.04 )
 - 3 point size                                  ( done 10.04 )
-- Write cool README                             ( done 14.04)
+- Write cool README                             ( done 14.04 )
 - dynamic accuracy in output
 - direct proportionality
 - varargs functions
 - Realloc in input lsm.c                        ( done 16.04 )
+- cmake
