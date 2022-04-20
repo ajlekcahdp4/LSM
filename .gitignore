@@ -9,3 +9,8 @@ vgcore.*
 data/
 run
 *.d
+CMakeFiles
+*.cmake
+CMakeCache.txt
+calc
+*.so
