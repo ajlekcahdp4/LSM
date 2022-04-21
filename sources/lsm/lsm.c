@@ -6,13 +6,10 @@
 #include "lsm.h"
 #include "gnuplot.h"
 #include "SLE.h"
-
+#include "calcs.h"
 
 #define MAX_STR_SIZE 256
 
-double Sum      (double* a, int N);
-double SumMul   (double* a, double* b, int N);
-double SumSq    (double* a, int N);
 double Get_a    (double* x, double* y, int N);
 double Get_b    (double* x, double* y, int N);
 double Get_ad   (double*x, double* y, int N);
@@ -90,29 +87,6 @@ struct input *Input (char *inputname)
 //==================================================================================================
 //===========================================LINEAR=LSM=============================================
 //==================================================================================================
-double Sum (double* a, int N)
-{
-    double S = 0;
-    for (int i = 0; i < N; i++)
-        S += a[i];
-    return S;
-}
-
-double SumMul (double* a, double* b, int N)
-{
-    double S = 0;
-    for (int i = 0; i < N; i++)
-        S += a[i] * b[i];
-    return S;
-}
-
-double SumSq (double* a, int N)
-{
-    double S = 0;
-    for (int i = 0; i < N; i++)
-        S += a[i] * a[i];
-    return S;
-}
 
 double Get_a (double* x, double* y, int N)
 {
@@ -156,7 +130,11 @@ struct lsm_linear *LinearCalc (struct input *INP)
     LINE->a  = Get_a   (LINE->x, LINE->y, LINE->N);
     LINE->b  = Get_b   (LINE->x, LINE->y, LINE->N);
     LINE->ad = Get_ad  (LINE->x, LINE->y, LINE->N);
-    LINE->bd = Get_bd  (LINE->x, LINE->y, LINE->N);
+    
+    if (LINE->b < 0.01 * _min (LINE->x, LINE->N))
+        LINE->b = (double)0;
+    else
+        LINE->bd = Get_bd  (LINE->x, LINE->y, LINE->N);
 
     return LINE;
 }
@@ -210,6 +188,8 @@ int LinearLsmCalc (char *inputname, char *outname, char *xlabel, char *ylabel, e
     free (LINE);
     return 0;
 }
+
+//=======================================direct
 
 //==================================================================================================
 //==========================================POLINOM=LSM=============================================
