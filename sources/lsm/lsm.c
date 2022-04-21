@@ -112,6 +112,19 @@ double Get_bd (double*x, double* y, int N)
     return bd;
 }
 
+double Get_a_dp (double *x, double *y, int N)
+{
+    double a = (SumMul (x, y, N)) / (SumSq (x, N));
+    return a;
+}
+
+double Get_ad_dp (double *x, double *y, int N)
+{
+    double a = Get_a_dp (x, y, N);
+    double ad = sqrt(  ( SumSq(y, N) / SumSq(x, N) - a * a ) / N );
+    return ad;
+}
+
 
 struct lsm_linear *LinearCalc (struct input *INP)
 {
@@ -127,15 +140,20 @@ struct lsm_linear *LinearCalc (struct input *INP)
     memcpy (LINE->x, INP->x, LINE->N * sizeof(double));
     memcpy (LINE->y, INP->y, LINE->N * sizeof(double));
 
-    LINE->a  = Get_a   (LINE->x, LINE->y, LINE->N);
-    LINE->b  = Get_b   (LINE->x, LINE->y, LINE->N);
-    LINE->ad = Get_ad  (LINE->x, LINE->y, LINE->N);
-    
-    if (LINE->b < 0.01 * _min (LINE->x, LINE->N))
-        LINE->b = (double)0;
-    else
-        LINE->bd = Get_bd  (LINE->x, LINE->y, LINE->N);
+    LINE->b  = Get_b (LINE->x, LINE->y, LINE->N);
 
+    if (LINE->b < 0.01 * _min (LINE->x, LINE->N))
+    {
+        LINE->b = (double)0;
+        LINE->a = Get_a_dp (LINE->x, LINE->y, LINE->N);
+        LINE->ad = Get_ad_dp (LINE->x, LINE->y, LINE->N);
+    }
+    else
+    {
+        LINE->a  = Get_a   (LINE->x, LINE->y, LINE->N);
+        LINE->ad = Get_ad  (LINE->x, LINE->y, LINE->N);
+        LINE->bd = Get_bd  (LINE->x, LINE->y, LINE->N);
+    }
     return LINE;
 }
 
@@ -188,8 +206,6 @@ int LinearLsmCalc (char *inputname, char *outname, char *xlabel, char *ylabel, e
     free (LINE);
     return 0;
 }
-
-//=======================================direct
 
 //==================================================================================================
 //==========================================POLINOM=LSM=============================================
@@ -288,10 +304,20 @@ lsm_exp *ExpCalc (struct input *INP)
     for (int i = 0; i < EXP->N; i++)
         EXP->y[i] = log (INP->y[i]);
 
-    EXP->a  = Get_a   (EXP->x, EXP->y, EXP->N);
     EXP->b  = Get_b   (EXP->x, EXP->y, EXP->N);
-    EXP->ad = Get_ad  (EXP->x, EXP->y, EXP->N);
-    EXP->bd = Get_bd  (EXP->x, EXP->y, EXP->N);
+        
+    if (EXP->b < 0.01 * _min (EXP->x, EXP->N))
+    {
+        EXP->b = (double)0;
+        EXP->a = Get_a_dp (EXP->x, EXP->y, EXP->N);
+        EXP->ad = Get_ad_dp (EXP->x, EXP->y, EXP->N);
+    }
+    else
+    {
+        EXP->a  = Get_a   (EXP->x, EXP->y, EXP->N);
+        EXP->ad = Get_ad  (EXP->x, EXP->y, EXP->N);
+        EXP->bd = Get_bd  (EXP->x, EXP->y, EXP->N);
+    }
     
     return EXP;
 }
