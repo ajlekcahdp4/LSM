@@ -5,7 +5,7 @@
 vgcore.*
 /*.ps
 /*.png
-1.res.sh
+/*.sh
 data/
 run
 *.d
