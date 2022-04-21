@@ -5,7 +5,7 @@
 - 3 point size                                  ( done 10.04 )
 - Write cool README                             ( done 14.04 )
 - dynamic accuracy in output
-- direct proportionality
+- direct proportionality                        ( done 21.04 )
 - varargs functions
 - Realloc in input lsm.c                        ( done 16.04 )
 - cmake
