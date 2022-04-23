@@ -3,6 +3,7 @@
 #include <string.h>
 #include <assert.h>
 #include <math.h>
+
 #include "lsm.h"
 #include "gnuplot.h"
 #include "SLE.h"
@@ -83,6 +84,29 @@ struct input *Input (char *inputname)
     return INP;
 }
 
+
+char *ChangeExtenshion (char *filename, char *new_extension) // don't free old name
+{
+    size_t old_len = strlen (filename);
+    size_t ext_len = strlen(new_extension);
+    size_t new_len = old_len + ext_len;
+    
+    char *newname = calloc (new_len + 1, sizeof(char));
+    int i = 0;
+    char c = 0;
+
+    while (c != '.' && i < old_len)
+    {
+        c = filename[i];
+        newname[i] = c;
+        i++;
+    }
+    if (c == old_len)
+        newname[i] = '.';
+    strcat (newname, new_extension);
+
+    return newname;
+}
 
 //==================================================================================================
 //===========================================LINEAR=LSM=============================================
@@ -170,18 +194,18 @@ int LinearLsmCalc (char *inputname, char *outname, char *xlabel, char *ylabel, e
     free (INP);
 
     char *script_name = calloc (MAX_STR_SIZE, sizeof(char));
-    char *picture_name = calloc (MAX_STR_SIZE, sizeof(char));
+    char *picture_name = NULL;
 
     LsmPrint (LINE, outname);
 
     strcat (script_name, outname);
     strcat (script_name, ".sh");
 
-    strcat (picture_name, outname);
+
     if (fmt == PNG)
-        strcat (picture_name, ".png");
+        picture_name = ChangeExtenshion(outname, "png");
     else
-        strcat (picture_name, ".ps");
+        picture_name = ChangeExtenshion(outname, "ps");
 
     struct lsm_t *LSM = calloc (1, sizeof (struct lsm_t));
     LSM->type = LINEAR;
@@ -248,17 +272,15 @@ int PolinomLsmCalc (int deg, char *inputname, char *outname, char *xlabel, char 
     PolinomLsmPrint (POL, deg, outname);
 
     char *script_name = calloc (MAX_STR_SIZE, sizeof(char));
-    char *picture_name = calloc (MAX_STR_SIZE, sizeof(char));
+    char *picture_name = NULL;
 
     strcat (script_name, outname);
     strcat (script_name, ".sh");
 
-    strcat (picture_name, outname);
-
     if (fmt == PNG)
-        strcat (picture_name, ".png");
+        picture_name = ChangeExtenshion(outname, "png");
     else
-        strcat (picture_name, ".ps");
+        picture_name = ChangeExtenshion(outname, "ps");
 
     struct lsm_t *LSM = calloc (1, sizeof (struct lsm_t));
     LSM->type = POLINOMIAL;
@@ -338,17 +360,16 @@ int ExpLsmCalc (char *inputname, char *outname, char *xlabel, char *ylabel, enum
     free (INP);
 
     char *script_name = calloc (MAX_STR_SIZE, sizeof(char));
-    char *picture_name = calloc (MAX_STR_SIZE, sizeof(char));
+    char *picture_name = NULL;
 
 
     strcat (script_name, outname);
     strcat (script_name, ".sh");
 
-    strcat (picture_name, outname);
-   if (fmt == PNG)
-        strcat (picture_name, ".png");
+    if (fmt == PNG)
+        picture_name = ChangeExtenshion(outname, "png");
     else
-        strcat (picture_name, ".ps");
+        picture_name = ChangeExtenshion(outname, "ps");
 
     struct lsm_t *LSM = calloc (1, sizeof (struct lsm_t));
     LSM->type = EXPONENTIAL;
