@@ -9,4 +9,4 @@ double SumMul (double* a, double* b, int N);
 //! return sum of squares of elements in array "a" of size "N"
 double SumSq  (double* a, int N);
 //! return 0 if equal, 1 if a > b and -1 if a < b
-int DoubleCmp (double a, double b, double accuracy)
+int DoubleCmp (double a, double b, double accuracy);
