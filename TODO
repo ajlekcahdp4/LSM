@@ -11,3 +11,4 @@
 - cmake                                             ( done 25.04 )
 - Rewrite structure of main
 - Write 1 func for lsm calc to escape copy-paste
+- check null case in dynamic accuracy in output

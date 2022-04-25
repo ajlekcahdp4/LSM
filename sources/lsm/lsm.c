@@ -399,7 +399,7 @@ int ExpLsmCalc (char *inputname, char *outname, char *xlabel, char *ylabel, enum
 //==================================================================================================
 //============================================OUTPUT================================================
 //==================================================================================================
-
+#define COMMON_ACCURACY ((double)1e-3)
 
 void LsmPrint (struct lsm_linear* LINE, char *outname)
 {
@@ -410,17 +410,17 @@ void LsmPrint (struct lsm_linear* LINE, char *outname)
 
     fprintf (out, "Measured values:\n");
     
-    fprintf (out, "X      Y\n");
+    fprintf (out, "%6sX%7sY\n", "", "");
 
     for (int i = 0; i < LINE->N; i++)
-        fprintf (out, "%-6.4g %-6.4g\n", LINE->x[i], LINE->y[i]);
+        fprintf (out, "%7g %7g\n", LINE->x[i], LINE->y[i]);
     fprintf (out, "\n\n");
 
     fprintf (out, "Coefficients of y = k*x + b:\n");
-    fprintf (out, "k = %.4g\n", LINE->a);
-    fprintf (out, "b = %.4g\n", LINE->b);
-    fprintf (out, "k_dev = %.4g\n", LINE->ad);
-    fprintf (out, "b_dev = %.4g\n", LINE->bd);
+    fprintf (out, "k = %g\n", LINE->a);
+    fprintf (out, "b = %g\n", LINE->b);
+    fprintf (out, "k_dev = %g\n", LINE->ad);
+    fprintf (out, "b_dev = %g\n", LINE->bd);
 
     fclose (out);
 
@@ -433,14 +433,14 @@ void PolinomLsmPrint (struct lsm_pol *POL, size_t deg, char *outname)
 
     fprintf (out, "Measured values:\n");
     
-    fprintf (out, "X      Y\n");
+    fprintf (out, "%6sX%7sY\n", "", "");
     for (int i = 0; i < POL->N; i++)
-        fprintf (out, "%-6.4g %-6.4g\n", POL->x[i], POL->y[i]);
+        fprintf (out, "%7g %7g\n", POL->x[i], POL->y[i]);
     fprintf (out, "\n\n");
 
     fprintf (out, "Coefficients of the polinom (from zero-coefficient to %lu-coefficiient):\n", deg);
     for (size_t i = 0; i <= deg; i++)
-        fprintf (out, "%.4g ", POL->a[i]);
+        fprintf (out, "%g ", POL->a[i]);
     fprintf (out, "\n");
 
     fclose (out);    
@@ -448,24 +448,35 @@ void PolinomLsmPrint (struct lsm_pol *POL, size_t deg, char *outname)
 
 void ExpLsmPrint (lsm_exp *EXP, char *outname)
 {
+    double min  = _min(EXP->x, EXP->N);
+    double max  = _max(EXP->x, EXP->N);
+    double diffx = max - min;
+
+    min  = _min(EXP->y, EXP->N);
+    max  = _max(EXP->y, EXP->N);
+    double diffy = max - min;
+
+    double diff = fabs(diffy - diffx) > 0 ? diffx : diffy;
+
+
     FILE *out = fopen (outname, "w");
 
     fprintf (out, "Number of measurements: %d\n\n", EXP->N);
 
     fprintf (out, "Measured values:\n");
 
-    fprintf (out, "X      Y\n");
+    fprintf (out, "%6sX%7sY\n", "", "");
 
-    
     for (int i = 0; i < EXP->N; i++)
-        fprintf (out, "%-6.4g %-6.4g\n", EXP->x[i], exp(EXP->y[i]));
+        fprintf (out, "%7g %7g\n", EXP->x[i], exp(EXP->y[i]));
     fprintf (out, "\n\n");
 
     fprintf (out, "Coefficients of the exponent y = exp (k*x + b):\n");
-    fprintf (out, "k = %.4g\n", EXP->a);
-    fprintf (out, "b = %.4g\n", EXP->b);
-    fprintf (out, "k_dev = %.4g\n", EXP->ad);
-    fprintf (out, "b_dev = %.4g\n", EXP->bd);
+
+    fprintf (out, "k = %g\n", EXP->a);
+    fprintf (out, "b = %g\n", EXP->b);
+    fprintf (out, "k_dev = %.g\n", EXP->ad);
+    fprintf (out, "b_dev = %.g\n", EXP->bd);
 
     fclose (out);
 }
