@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <stdio.h>
 
 double _min (double *arr, size_t size)
 {
@@ -47,3 +48,16 @@ double SumSq (double* a, int N)
 }
 
 
+int DoubleCmp (double a, double b, double accuracy)
+{
+    if (accuracy > 0)
+    {
+        fprintf (stderr, "WARNING: sub zero accuracy, using absolute value of the accuracy given\n");
+        accuracy = fabs (accuracy);
+    }
+    if (fabs(a - b) < accuracy)
+        return 0;
+    if (a - b > 0)
+        return 1;
+    return -1;
+}
