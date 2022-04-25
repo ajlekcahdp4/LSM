@@ -4,11 +4,10 @@
 - png support right way                             ( done 11.04 )
 - 3 point size                                      ( done 10.04 )
 - Write cool README                                 ( done 14.04 )
-- dynamic accuracy in output
+- dynamic accuracy in output                        ( done 25.04 )
 - direct proportionality                            ( done 21.04 )
 - varargs functions
 - Realloc in input lsm.c                            ( done 16.04 )
 - cmake                                             ( done 25.04 )
 - Rewrite structure of main
 - Write 1 func for lsm calc to escape copy-paste
-- check null case in dynamic accuracy in output
