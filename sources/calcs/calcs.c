@@ -50,7 +50,7 @@ double SumSq (double* a, int N)
 
 int DoubleCmp (double a, double b, double accuracy)
 {
-    if (accuracy > 0)
+    if (accuracy < 0)
     {
         fprintf (stderr, "WARNING: sub zero accuracy, using absolute value of the accuracy given\n");
         accuracy = fabs (accuracy);
