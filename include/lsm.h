@@ -34,13 +34,15 @@ enum type { LINEAR, EXPONENTIAL, POLINOMIAL };
 
 struct lsm_t
 {
-    union 
-    {
-        struct lsm_linear *LINE;
-        struct lsm_pol    *POL;
-        lsm_exp *EXP;
-    } U;
-    enum type type;
+    double *x;
+    double *y;
+    double *array_coef;
+    double  a;
+    double  b;
+    double  ad;
+    double  bd;
+    int N;
+    int deg;
 };
 
 

@@ -16,11 +16,12 @@ double Get_b    (double* x, double* y, int N);
 double Get_ad   (double*x, double* y, int N);
 double Get_bd   (double*x, double* y, int N);
 
-lsm_exp *ExpCalc (struct input *INP);
 
-void LsmPrint (struct lsm_linear* LINE, char *outname);
-void PolinomLsmPrint (struct lsm_pol *POL, size_t deg, char *outname);
-void ExpLsmPrint (lsm_exp *EXP, char *outname);
+void LsmPrint (struct lsm_t* LINE, char *outname);
+void PolinomLsmPrint (struct lsm_t *POL, char *outname);
+void ExpLsmPrint (struct lsm_t *EXP, char *outname);
+
+
 //==================================================================================================
 //=============================================INPUT================================================
 //==================================================================================================
@@ -35,6 +36,7 @@ double *InputRow (FILE *file, int N)
     return row;
 }
 
+//==================================================================================================
 
 struct input *InputResize (struct input *INP, int capacity)
 {
@@ -42,6 +44,8 @@ struct input *InputResize (struct input *INP, int capacity)
     INP->y = realloc (INP->y, capacity * sizeof(double));
     return INP;
 }
+
+//==================================================================================================
 
 #define START_SIZE ((int)32)
 
@@ -84,6 +88,7 @@ struct input *Input (char *inputname)
     return INP;
 }
 
+//==================================================================================================
 
 char *ChangeExtenshion (char *filename, char *new_extension) // don't free old name
 {
@@ -149,27 +154,23 @@ double Get_ad_dp (double *x, double *y, int N)
     return ad;
 }
 
+//==================================================================================================
 
-struct lsm_linear *LinearCalc (struct input *INP)
+struct lsm_t *LinearCalc (struct input *INP)
 {
-    struct lsm_linear *LINE = calloc (1, sizeof (struct lsm_linear));
+    struct lsm_t *LINE = calloc (1, sizeof(struct lsm_t));
     assert (LINE);
 
     LINE->N = INP->N;
-    LINE->x = calloc (LINE->N, sizeof(double));
-    LINE->y = calloc (LINE->N, sizeof(double));
-    assert (LINE->y);
-    assert (LINE->x);
-
-    memcpy (LINE->x, INP->x, LINE->N * sizeof(double));
-    memcpy (LINE->y, INP->y, LINE->N * sizeof(double));
+    LINE->x = INP->x;
+    LINE->y = INP->y;
 
     LINE->b  = Get_b (LINE->x, LINE->y, LINE->N);
 
     if (LINE->b < 0.01 * _min (LINE->x, LINE->N))
     {
-        LINE->b = (double)0;
-        LINE->a = Get_a_dp (LINE->x, LINE->y, LINE->N);
+        LINE->b  = (double)0;
+        LINE->a  = Get_a_dp (LINE->x, LINE->y, LINE->N);
         LINE->ad = Get_ad_dp (LINE->x, LINE->y, LINE->N);
     }
     else
@@ -181,6 +182,7 @@ struct lsm_linear *LinearCalc (struct input *INP)
     return LINE;
 }
 
+//==================================================================================================
 
 int LinearLsmCalc (char *inputname, char *outname, char *xlabel, char *ylabel, enum format fmt)
 {
@@ -188,9 +190,7 @@ int LinearLsmCalc (char *inputname, char *outname, char *xlabel, char *ylabel, e
     if (INP == NULL)
         return ERROR_INPUT_FILE_DOES_NOT_EXISTS;
 
-    struct lsm_linear *LINE = LinearCalc (INP);
-    free (INP->x);
-    free (INP->y);
+    struct lsm_t *LINE = LinearCalc (INP);
     free (INP);
 
     char *script_name = calloc (MAX_STR_SIZE, sizeof(char));
@@ -207,9 +207,6 @@ int LinearLsmCalc (char *inputname, char *outname, char *xlabel, char *ylabel, e
     else
         picture_name = ChangeExtenshion(outname, "ps");
 
-    struct lsm_t *LSM = calloc (1, sizeof (struct lsm_t));
-    LSM->type = LINEAR;
-    LSM->U.LINE = LINE;
 
     struct output_t *out = calloc (1, sizeof(struct output_t));
     out->fmt = fmt;
@@ -218,16 +215,16 @@ int LinearLsmCalc (char *inputname, char *outname, char *xlabel, char *ylabel, e
     out->xlabel = xlabel;
     out->ylabel = ylabel;
 
-    gnuplot (out, inputname, LSM);
+    gnuplot (out, inputname, LINE);
     
     free (out);
     free (script_name);
     free (picture_name);
-    free (LSM);
 
     free (LINE->x);
     free (LINE->y);
     free (LINE);
+
     return 0;
 }
 
@@ -235,26 +232,22 @@ int LinearLsmCalc (char *inputname, char *outname, char *xlabel, char *ylabel, e
 //==========================================POLINOM=LSM=============================================
 //==================================================================================================
 
-struct lsm_pol *PolinomCalc (struct input *INP, size_t deg)
+struct lsm_t *PolinomCalc (struct input *INP, size_t deg)
 {
-    struct lsm_pol *POL = calloc (1, sizeof(struct lsm_pol));
+    struct lsm_t *POL = calloc (1, sizeof(struct lsm_t));
     assert (POL);
 
     POL->N = INP->N;
-    POL->x = calloc (POL->N, sizeof(double));
-    POL->y = calloc (POL->N, sizeof(double));
-    assert (POL->x && POL->y);
+    POL->x = INP->x;
+    POL->y = INP->y;
 
-    memcpy (POL->x, INP->x, POL->N * sizeof(double));
-    memcpy (POL->y, INP->y, POL->N * sizeof(double));
-
-    POL->a = SolveSLE (INP, deg);
+    POL->array_coef = SolveSLE (INP, deg);
     POL->deg = deg;
     
     return POL;
 }
 
-
+//==================================================================================================
 
 int PolinomLsmCalc (int deg, char *inputname, char *outname, char *xlabel, char *ylabel, enum format fmt)
 {
@@ -263,13 +256,13 @@ int PolinomLsmCalc (int deg, char *inputname, char *outname, char *xlabel, char 
     if (INP == NULL)
         return ERROR_INPUT_FILE_DOES_NOT_EXISTS;
 
-    struct lsm_pol *POL = PolinomCalc (INP, deg);
+    struct lsm_t *POL = PolinomCalc (INP, deg);
     free (INP->x);
     free (INP->y);
     free (INP);
     
 
-    PolinomLsmPrint (POL, deg, outname);
+    PolinomLsmPrint (POL, outname);
 
     char *script_name = calloc (MAX_STR_SIZE, sizeof(char));
     char *picture_name = NULL;
@@ -282,10 +275,6 @@ int PolinomLsmCalc (int deg, char *inputname, char *outname, char *xlabel, char 
     else
         picture_name = ChangeExtenshion(outname, "ps");
 
-    struct lsm_t *LSM = calloc (1, sizeof (struct lsm_t));
-    LSM->type = POLINOMIAL;
-    LSM->U.POL = POL;
-
     struct output_t *out = calloc (1, sizeof(struct output_t));
     out->fmt = fmt;
     out->picture_name = picture_name;
@@ -293,17 +282,17 @@ int PolinomLsmCalc (int deg, char *inputname, char *outname, char *xlabel, char 
     out->xlabel = xlabel;
     out->ylabel = ylabel;
 
-    gnuplot (out, inputname, LSM);
+    gnuplot (out, inputname, POL);
 
     free(out);
     free (script_name);
     free (picture_name);
-    free (LSM);
     
     free (POL->x);
     free (POL->y);
-    free (POL->a);
+    free (POL->array_coef);
     free (POL);
+
     return 0;
 }
 //==================================================================================================
@@ -311,9 +300,9 @@ int PolinomLsmCalc (int deg, char *inputname, char *outname, char *xlabel, char 
 //==================================================================================================
 
 
-lsm_exp *ExpCalc (struct input *INP)
+struct lsm_t *ExpCalc (struct input *INP)
 {
-    lsm_exp *EXP = calloc (1, sizeof(lsm_exp));
+    struct lsm_t *EXP = calloc (1, sizeof(struct lsm_t));
     assert (EXP);
 
     EXP->N = INP->N;
@@ -344,6 +333,7 @@ lsm_exp *ExpCalc (struct input *INP)
     return EXP;
 }
 
+//==================================================================================================
 
 int ExpLsmCalc (char *inputname, char *outname, char *xlabel, char *ylabel, enum format fmt)
 {
@@ -351,7 +341,7 @@ int ExpLsmCalc (char *inputname, char *outname, char *xlabel, char *ylabel, enum
         if (INP == NULL)
         return ERROR_INPUT_FILE_DOES_NOT_EXISTS;
 
-    lsm_exp *EXP = ExpCalc (INP);
+    struct lsm_t *EXP = ExpCalc (INP);
     
 
     ExpLsmPrint (EXP, outname);
@@ -371,9 +361,6 @@ int ExpLsmCalc (char *inputname, char *outname, char *xlabel, char *ylabel, enum
     else
         picture_name = ChangeExtenshion(outname, "ps");
 
-    struct lsm_t *LSM = calloc (1, sizeof (struct lsm_t));
-    LSM->type = EXPONENTIAL;
-    LSM->U.EXP = EXP;
 
      struct output_t *out = calloc (1, sizeof(struct output_t));
     out->fmt = fmt;
@@ -383,16 +370,16 @@ int ExpLsmCalc (char *inputname, char *outname, char *xlabel, char *ylabel, enum
     out->ylabel = ylabel;
 
 
-    gnuplot (out, inputname, LSM);
+    gnuplot (out, inputname, EXP);
 
     free(out);  
     free (script_name);
     free (picture_name);
-    free (LSM);
 
     free (EXP->x);
     free (EXP->y);
     free (EXP);
+
     return 0;
 }
 
@@ -401,7 +388,7 @@ int ExpLsmCalc (char *inputname, char *outname, char *xlabel, char *ylabel, enum
 //==================================================================================================
 #define COMMON_ACCURACY ((double)1e-3)
 
-void LsmPrint (struct lsm_linear* LINE, char *outname)
+void LsmPrint (struct lsm_t* LINE, char *outname)
 {
     FILE* out = fopen (outname, "w");
 
@@ -426,7 +413,9 @@ void LsmPrint (struct lsm_linear* LINE, char *outname)
 
 }
 
-void PolinomLsmPrint (struct lsm_pol *POL, size_t deg, char *outname)
+//==================================================================================================
+
+void PolinomLsmPrint (struct lsm_t *POL, char *outname)
 {
     FILE* out = fopen (outname, "w");
     fprintf (out, "Number of measurements: %d\n\n", POL->N);
@@ -438,15 +427,17 @@ void PolinomLsmPrint (struct lsm_pol *POL, size_t deg, char *outname)
         fprintf (out, "%7g %7g\n", POL->x[i], POL->y[i]);
     fprintf (out, "\n\n");
 
-    fprintf (out, "Coefficients of the polinom (from zero-coefficient to %lu-coefficiient):\n", deg);
-    for (size_t i = 0; i <= deg; i++)
-        fprintf (out, "%g ", POL->a[i]);
+    fprintf (out, "Coefficients of the polinom (from zero-coefficient to %lu-coefficiient):\n", POL->deg);
+    for (size_t i = 0; i <= POL->deg; i++)
+        fprintf (out, "%g ", POL->array_coef[i]);
     fprintf (out, "\n");
 
     fclose (out);    
 }
 
-void ExpLsmPrint (lsm_exp *EXP, char *outname)
+//==================================================================================================
+
+void ExpLsmPrint (struct lsm_t *EXP, char *outname)
 {
     double min  = _min(EXP->x, EXP->N);
     double max  = _max(EXP->x, EXP->N);
