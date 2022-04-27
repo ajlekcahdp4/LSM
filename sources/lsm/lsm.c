@@ -97,8 +97,8 @@ char *ChangeExtenshion (char *filename, char *new_extension) // don't free old n
     size_t new_len = old_len + ext_len;
     
     char *newname = calloc (new_len + 1, sizeof(char));
-    int i = 0;
-    char c = 0;
+    size_t i = 0;
+    unsigned char c = 0;
 
     while (c != '.' && i < old_len)
     {
@@ -160,6 +160,8 @@ struct lsm_t *LinearCalc (struct input *INP)
 {
     struct lsm_t *LINE = calloc (1, sizeof(struct lsm_t));
     assert (LINE);
+
+    LINE->type = LINEAR;
 
     LINE->N = INP->N;
     LINE->x = INP->x;
@@ -237,6 +239,8 @@ struct lsm_t *PolinomCalc (struct input *INP, size_t deg)
     struct lsm_t *POL = calloc (1, sizeof(struct lsm_t));
     assert (POL);
 
+    POL->type = POLINOMIAL;
+
     POL->N = INP->N;
     POL->x = INP->x;
     POL->y = INP->y;
@@ -257,8 +261,6 @@ int PolinomLsmCalc (int deg, char *inputname, char *outname, char *xlabel, char 
         return ERROR_INPUT_FILE_DOES_NOT_EXISTS;
 
     struct lsm_t *POL = PolinomCalc (INP, deg);
-    free (INP->x);
-    free (INP->y);
     free (INP);
     
 
@@ -305,13 +307,14 @@ struct lsm_t *ExpCalc (struct input *INP)
     struct lsm_t *EXP = calloc (1, sizeof(struct lsm_t));
     assert (EXP);
 
+    EXP->type = EXPONENTIAL;
+
     EXP->N = INP->N;
     EXP->x = calloc (EXP->N, sizeof(double));
     EXP->y = calloc (EXP->N, sizeof(double));
     assert (EXP->x && EXP->y);
 
-    for (int i = 0; i < EXP->N; i++)
-        EXP->x[i] = INP->x[i];
+    EXP->x = INP->x;
     for (int i = 0; i < EXP->N; i++)
         EXP->y[i] = log (INP->y[i]);
 
@@ -342,12 +345,11 @@ int ExpLsmCalc (char *inputname, char *outname, char *xlabel, char *ylabel, enum
         return ERROR_INPUT_FILE_DOES_NOT_EXISTS;
 
     struct lsm_t *EXP = ExpCalc (INP);
-    
+    free (INP);
+    free (INP->y);
 
     ExpLsmPrint (EXP, outname);
-    free (INP->x);
-    free (INP->y);
-    free (INP);
+    
 
     char *script_name = calloc (MAX_STR_SIZE, sizeof(char));
     char *picture_name = NULL;
@@ -427,8 +429,8 @@ void PolinomLsmPrint (struct lsm_t *POL, char *outname)
         fprintf (out, "%7g %7g\n", POL->x[i], POL->y[i]);
     fprintf (out, "\n\n");
 
-    fprintf (out, "Coefficients of the polinom (from zero-coefficient to %lu-coefficiient):\n", POL->deg);
-    for (size_t i = 0; i <= POL->deg; i++)
+    fprintf (out, "Coefficients of the polinom (from zero-coefficient to %d-coefficiient):\n", POL->deg);
+    for (int i = 0; i <= POL->deg; i++)
         fprintf (out, "%g ", POL->array_coef[i]);
     fprintf (out, "\n");
 
@@ -439,17 +441,6 @@ void PolinomLsmPrint (struct lsm_t *POL, char *outname)
 
 void ExpLsmPrint (struct lsm_t *EXP, char *outname)
 {
-    double min  = _min(EXP->x, EXP->N);
-    double max  = _max(EXP->x, EXP->N);
-    double diffx = max - min;
-
-    min  = _min(EXP->y, EXP->N);
-    max  = _max(EXP->y, EXP->N);
-    double diffy = max - min;
-
-    double diff = fabs(diffy - diffx) > 0 ? diffx : diffy;
-
-
     FILE *out = fopen (outname, "w");
 
     fprintf (out, "Number of measurements: %d\n\n", EXP->N);

@@ -43,6 +43,7 @@ struct lsm_t
     double  bd;
     int N;
     int deg;
+    enum type type;
 };
 
 

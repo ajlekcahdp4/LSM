@@ -72,7 +72,7 @@ void gnuplot_plot (FILE *script, struct output_t *out, char *input_name, struct 
 {
     assert(out);
 
-    int N      = 0;
+    int N = LSM->N;
     double min_x  = 0;
     double max_x  = 0;
     double diff_x = 0;
@@ -89,59 +89,58 @@ void gnuplot_plot (FILE *script, struct output_t *out, char *input_name, struct 
     switch (LSM->type)
     {
     case LINEAR:
-        N = LSM->U.LINE->N;
-        max_x  = _max (LSM->U.LINE->x, N);
-        min_x  = _min (LSM->U.LINE->x, N);
+        max_x  = _max (LSM->x, N);
+        min_x  = _min (LSM->x, N);
         diff_x = max_x - min_x;
 
-        max_y  = _max (LSM->U.LINE->y, N);
-        min_y  = _min (LSM->U.LINE->y, N);
+        max_y  = _max (LSM->y, N);
+        min_y  = _min (LSM->y, N);
         diff_y = max_y - min_y;
 
         accuracy = 0.01 * min_y;
 
         fprintf (script, "set xrange [%g : %g]\n", min_x - 0.1*diff_x, max_x + 0.1*diff_x);
         fprintf (script, "set yrange [%g : %g]\n", min_y - 0.1*diff_y, max_y + 0.1*diff_y);
-        if (fabs(LSM->U.LINE->b) < accuracy)
-            fprintf (script, "plot %g * x linestyle 1, \"%s\" with points linestyle 2 notitle\n", LSM->U.LINE->a,  input_name);
+        if (fabs(LSM->b) < accuracy)
+            fprintf (script, "plot %g * x linestyle 1, \"%s\" with points linestyle 2 notitle\n", LSM->a,  input_name);
         else
-            fprintf (script, "plot %g * x %+g linestyle 1, \"%s\" with points linestyle 2 notitle\n", LSM->U.LINE->a, LSM->U.LINE->b, input_name);
+            fprintf (script, "plot %g * x %+g linestyle 1, \"%s\" with points linestyle 2 notitle\n", LSM->a, LSM->b, input_name);
         break;
     case EXPONENTIAL:
-        N = LSM->U.EXP->N;
-        max_x  = _max (LSM->U.EXP->x, N);
-        min_x  = _min (LSM->U.EXP->x, N);
+        N = LSM->N;
+        max_x  = _max (LSM->x, N);
+        min_x  = _min (LSM->x, N);
         diff_x = max_x - min_x;
 
-        max_y  = exp (_max (LSM->U.EXP->y, N));
-        min_y  = exp (_min (LSM->U.EXP->y, N));
+        max_y  = exp (_max (LSM->y, N));
+        min_y  = exp (_min (LSM->y, N));
         diff_y = max_y - min_y;
 
         accuracy = 0.01 * min_y;
 
         fprintf (script, "set xrange [%g : %g]\n", min_x - 0.1*diff_x, max_x + 0.1*diff_x);
         fprintf (script, "set yrange [%g : %g]\n", min_y - 0.1*diff_y, max_y + 0.1*diff_y);
-        if (fabs(LSM->U.LINE->b) < accuracy)
-            fprintf (script, "plot exp (%g * x) linestyle 1, \"%s\" with points linestyle 2 notitle\n", LSM->U.EXP->a,  input_name);
+        if (fabs(LSM->b) < accuracy)
+            fprintf (script, "plot exp (%g * x) linestyle 1, \"%s\" with points linestyle 2 notitle\n", LSM->a,  input_name);
         else
-            fprintf (script, "plot exp (%g * x %+g) linestyle 1, \"%s\" with points linestyle 2 notitle\n", LSM->U.LINE->a, LSM->U.LINE->b, input_name);
+            fprintf (script, "plot exp (%g * x %+g) linestyle 1, \"%s\" with points linestyle 2 notitle\n", LSM->a, LSM->b, input_name);
         break;
     case POLINOMIAL:
-        N = LSM->U.POL->N;
-        max_x  = _max (LSM->U.POL->x, N);
-        min_x  = _min (LSM->U.POL->x, N);
+        N = LSM->N;
+        max_x  = _max (LSM->x, N);
+        min_x  = _min (LSM->x, N);
         diff_x = max_x - min_x;
 
-        max_y  = _max (LSM->U.POL->y, N);
-        min_y  = _min (LSM->U.POL->y, N);
+        max_y  = _max (LSM->y, N);
+        min_y  = _min (LSM->y, N);
         diff_y = max_y - min_y;
 
         fprintf (script, "set xrange [%g : %g]\n", min_x - 0.1*diff_x, max_x + 0.1*diff_x);
         fprintf (script, "set yrange [%g : %g]\n", min_y - 0.1*diff_y, max_y + 0.1*diff_y);
 
-        fprintf (script, "plot %g ", LSM->U.POL->a[0]);
-        for (int i = 1; i <= LSM->U.POL->deg; i++)
-            fprintf (script, "%+g * x**%d ", LSM->U.POL->a[i], i);
+        fprintf (script, "plot %g ", LSM->array_coef[0]);
+        for (int i = 1; i <= LSM->deg; i++)
+            fprintf (script, "%+g * x**%d ", LSM->array_coef[i], i);
         fprintf (script, "linestyle 1, \"%s\" with points linestyle 2 notitle\n", input_name);
         break;
     }
