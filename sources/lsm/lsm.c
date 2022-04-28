@@ -195,13 +195,13 @@ int LinearLsmCalc (char *inputname, char *outname, char *xlabel, char *ylabel, e
     struct lsm_t *LINE = LinearCalc (INP);
     free (INP);
 
-    char *script_name = calloc (MAX_STR_SIZE, sizeof(char));
+    char *script_name = NULL;
     char *picture_name = NULL;
 
     LsmPrint (LINE, outname);
 
-    strcat (script_name, outname);
-    strcat (script_name, ".sh");
+    script_name = ChangeExtenshion(outname, "sh");
+
 
 
     if (fmt == PNG)
@@ -266,11 +266,10 @@ int PolinomLsmCalc (int deg, char *inputname, char *outname, char *xlabel, char 
 
     PolinomLsmPrint (POL, outname);
 
-    char *script_name = calloc (MAX_STR_SIZE, sizeof(char));
+    char *script_name = NULL;
     char *picture_name = NULL;
 
-    strcat (script_name, outname);
-    strcat (script_name, ".sh");
+    script_name = ChangeExtenshion (outname, "sh");
 
     if (fmt == PNG)
         picture_name = ChangeExtenshion(outname, "png");
@@ -351,12 +350,10 @@ int ExpLsmCalc (char *inputname, char *outname, char *xlabel, char *ylabel, enum
     ExpLsmPrint (EXP, outname);
     
 
-    char *script_name = calloc (MAX_STR_SIZE, sizeof(char));
+    char *script_name = NULL;
     char *picture_name = NULL;
-
-
-    strcat (script_name, outname);
-    strcat (script_name, ".sh");
+    
+    script_name = ChangeExtenshion (outname, "sh");
 
     if (fmt == PNG)
         picture_name = ChangeExtenshion(outname, "png");
