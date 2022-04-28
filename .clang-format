@@ -1,0 +1,45 @@
+BasedOnStyle: Microsoft
+Language: Cpp
+#-------------------------------
+AlignConsecutiveAssignments: true
+AlignConsecutiveMacros: true
+AlignOperands: false
+AlignTrailingComments: false
+AlignEscapedNewlines: Left
+AllowShortEnumsOnASingleLine: true
+
+BinPackArguments: true
+BinPackParameters: true
+BreakBeforeBraces: Custom
+BraceWrapping:
+    AfterControlStatement: true
+    AfterEnum: true
+    AfterFunction: true
+    AfterStruct: true
+    AfterUnion: true
+    BeforeElse: true
+    IndentBraces: false
+
+ColumnLimit: 120
+ContinuationIndentWidth: 4
+
+IncludeBlocks: Preserve
+IndentCaseBlocks: false
+IndentCaseLabels: false
+IndentPPDirectives: BeforeHash
+IndentWidth: 4
+
+ReferenceAlignment: Right
+ReflowComments: true
+SpaceAfterCStyleCast: false
+SpaceAfterLogicalNot: false
+SpaceAroundPointerQualifiers: Default
+SpaceBeforeAssignmentOperators: true
+SpaceBeforeCaseColon: false
+SpaceBeforeCpp11BracedList: true
+SpaceBeforeParens: Always
+SpaceBeforeRangeBasedForLoopColon: true
+SpaceBeforeSquareBrackets: false
+SpacesBeforeTrailingComments: 3
+SpacesInConditionalStatement: true
+SpacesInContainerLiterals: true

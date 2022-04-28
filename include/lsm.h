@@ -1,15 +1,5 @@
 #ifndef LSM_INCLUDED
 #define LSM_INCLUDED
-struct lsm_linear
-{
-    int     N;
-    double* x;
-    double* y;
-    double  a;
-    double  b;
-    double  ad;
-    double  bd;
-};
 
 struct input
 {
@@ -18,40 +8,40 @@ struct input
     double *y;
 };
 
-struct lsm_pol
+enum type
 {
-    double *x;
-    double *y;
-    double *a;
-    int N;
-    int deg;
+    LINEAR,
+    EXPONENTIAL,
+    POLINOMIAL
 };
-
-
-typedef struct lsm_linear lsm_exp;
-
-enum type { LINEAR, EXPONENTIAL, POLINOMIAL };
 
 struct lsm_t
 {
     double *x;
     double *y;
     double *array_coef;
-    double  a;
-    double  b;
-    double  ad;
-    double  bd;
+    double a;
+    double b;
+    double ad;
+    double bd;
     int N;
     int deg;
     enum type type;
 };
 
+enum format
+{
+    PNG,
+    PS
+};
 
-enum format { PNG, PS };
+enum ERRORS
+{
+    NO_ERROR,
+    ERROR_INPUT_FILE_DOES_NOT_EXISTS
+};
 
-enum ERRORS { NO_ERROR, ERROR_INPUT_FILE_DOES_NOT_EXISTS };
-
-int LinearLsmCalc  (char *inputname, char *outname, char *xlabel, char *ylabel, enum format fmt);
+int LinearLsmCalc (char *inputname, char *outname, char *xlabel, char *ylabel, enum format fmt);
 int PolinomLsmCalc (int deg, char *inputname, char *outname, char *xlabel, char *ylabel, enum format fmt);
-int ExpLsmCalc     (char *inputname, char *outname, char *xlabel, char *ylabel, enum format fmt);
+int ExpLsmCalc (char *inputname, char *outname, char *xlabel, char *ylabel, enum format fmt);
 #endif
