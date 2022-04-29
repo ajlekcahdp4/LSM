@@ -7,11 +7,5 @@ vgcore.*
 /*.png
 /*.sh
 data/
-run
-*.d
-CMakeFiles
-*.cmake
-CMakeCache.txt
 calc
-*.so
-Makefile
+build/
