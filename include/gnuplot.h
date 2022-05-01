@@ -1,6 +1,6 @@
 #include "lsm.h"
 
-struct output_t
+struct output_inf
 {
     char *script_name;
     char *picture_name;
@@ -9,4 +9,4 @@ struct output_t
     enum format fmt;
 };
 
-void gnuplot (struct output_t *out, char *input_name, struct lsm_t *LSM);
+void gnuplot (struct output_inf *out, char *input_name, struct lsm_t *LSM);

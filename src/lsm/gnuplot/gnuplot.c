@@ -8,12 +8,12 @@
 #include "gnuplot.h"
 
 FILE *gnuplot_start (char *scriptname, char *picture_name);
-void gnuplot_plot (FILE *script, struct output_t *out, char *input_name, struct lsm_t *LSM);
-void gnuplot_script_gen (struct output_t *out, char *input_name, struct lsm_t *LSM);
+void gnuplot_plot (FILE *script, struct output_inf *out, char *input_name, struct lsm_t *LSM);
+void gnuplot_script_gen (struct output_inf *out, char *input_name, struct lsm_t *LSM);
 
 //=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
 #define MAX_CMD_SIZE 128
-void gnuplot (struct output_t *out, char *input_name, struct lsm_t *LSM)
+void gnuplot (struct output_inf *out, char *input_name, struct lsm_t *LSM)
 {
     gnuplot_script_gen (out, input_name, LSM);
 
@@ -31,7 +31,7 @@ void gnuplot (struct output_t *out, char *input_name, struct lsm_t *LSM)
 }
 #undef MAX_CMD_SIZE
 
-void gnuplot_script_gen (struct output_t *out, char *input_name, struct lsm_t *LSM)
+void gnuplot_script_gen (struct output_inf *out, char *input_name, struct lsm_t *LSM)
 {
     FILE *script = gnuplot_start (out->script_name, out->picture_name);
     gnuplot_plot (script, out, input_name, LSM);
@@ -64,7 +64,7 @@ FILE *gnuplot_start (char *script_name, char *picture_name)
 }
 
 #define MAX_NAME_LEN 256
-void gnuplot_plot (FILE *script, struct output_t *out, char *input_name, struct lsm_t *LSM)
+void gnuplot_plot (FILE *script, struct output_inf *out, char *input_name, struct lsm_t *LSM)
 {
     assert (out);
 

@@ -112,6 +112,27 @@ char *ChangeExtenshion (char *filename, char *new_extension)   // don't free old
 }
 
 //==================================================================================================
+
+struct output_inf *SetOutputInf (char *outname, char *xlabel, char *ylabel, enum format fmt)
+{
+    char *picture_name = NULL;
+    char *script_name = ChangeExtenshion (outname, "sh");
+
+    if ( fmt == PNG )
+        picture_name = ChangeExtenshion (outname, "png");
+    else
+        picture_name = ChangeExtenshion (outname, "ps");
+
+    struct output_inf *out = calloc (1, sizeof (struct output_inf));
+    out->fmt             = fmt;
+    out->picture_name    = picture_name;
+    out->script_name     = script_name;
+    out->xlabel          = xlabel;
+    out->ylabel          = ylabel;
+    return out;
+}
+
+//==================================================================================================
 //===========================================LINEAR=LSM=============================================
 //==================================================================================================
 
@@ -196,30 +217,15 @@ int LinearLsmCalc (char *inputname, char *outname, char *xlabel, char *ylabel, e
     struct lsm_t *LINE = LinearCalc (INP);
     free (INP);
 
-    char *script_name  = NULL;
-    char *picture_name = NULL;
-
     LsmPrint (LINE, outname);
 
-    script_name = ChangeExtenshion (outname, "sh");
-
-    if ( fmt == PNG )
-        picture_name = ChangeExtenshion (outname, "png");
-    else
-        picture_name = ChangeExtenshion (outname, "ps");
-
-    struct output_t *out = calloc (1, sizeof (struct output_t));
-    out->fmt             = fmt;
-    out->picture_name    = picture_name;
-    out->script_name     = script_name;
-    out->xlabel          = xlabel;
-    out->ylabel          = ylabel;
+    struct output_inf *out = SetOutputInf (outname, xlabel, ylabel, fmt);
 
     gnuplot (out, inputname, LINE);
 
+    free (out->script_name);
+    free (out->picture_name);
     free (out);
-    free (script_name);
-    free (picture_name);
 
     free (LINE->x);
     free (LINE->y);
@@ -263,28 +269,13 @@ int PolinomLsmCalc (int deg, char *inputname, char *outname, char *xlabel, char 
 
     PolinomLsmPrint (POL, outname);
 
-    char *script_name  = NULL;
-    char *picture_name = NULL;
-
-    script_name = ChangeExtenshion (outname, "sh");
-
-    if ( fmt == PNG )
-        picture_name = ChangeExtenshion (outname, "png");
-    else
-        picture_name = ChangeExtenshion (outname, "ps");
-
-    struct output_t *out = calloc (1, sizeof (struct output_t));
-    out->fmt             = fmt;
-    out->picture_name    = picture_name;
-    out->script_name     = script_name;
-    out->xlabel          = xlabel;
-    out->ylabel          = ylabel;
+    struct output_inf *out = SetOutputInf (outname, xlabel, ylabel, fmt);
 
     gnuplot (out, inputname, POL);
 
+    free (out->script_name);
+    free (out->picture_name);
     free (out);
-    free (script_name);
-    free (picture_name);
 
     free (POL->x);
     free (POL->y);
@@ -345,28 +336,13 @@ int ExpLsmCalc (char *inputname, char *outname, char *xlabel, char *ylabel, enum
 
     ExpLsmPrint (EXP, outname);
 
-    char *script_name  = NULL;
-    char *picture_name = NULL;
-
-    script_name = ChangeExtenshion (outname, "sh");
-
-    if ( fmt == PNG )
-        picture_name = ChangeExtenshion (outname, "png");
-    else
-        picture_name = ChangeExtenshion (outname, "ps");
-
-    struct output_t *out = calloc (1, sizeof (struct output_t));
-    out->fmt             = fmt;
-    out->picture_name    = picture_name;
-    out->script_name     = script_name;
-    out->xlabel          = xlabel;
-    out->ylabel          = ylabel;
+    struct output_inf *out = SetOutputInf (outname, xlabel, ylabel, fmt);
 
     gnuplot (out, inputname, EXP);
 
+    free (out->script_name);
+    free (out->picture_name);
     free (out);
-    free (script_name);
-    free (picture_name);
 
     free (EXP->x);
     free (EXP->y);
