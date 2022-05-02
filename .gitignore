@@ -6,6 +6,7 @@ vgcore.*
 /*.ps
 /*.png
 /*.sh
+/*.txt
 data/
 calc
 build/

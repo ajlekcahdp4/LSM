@@ -91,7 +91,7 @@ void gnuplot_plot (FILE *script, struct output_inf *out, char *input_name, struc
         min_y  = _min (LSM->y, N);
         diff_y = max_y - min_y;
 
-        accuracy = 0.01 * min_y;
+        accuracy = 1e-3 * min_y;
 
         fprintf (script, "set xrange [%g : %g]\n", min_x - 0.1 * diff_x, max_x + 0.1 * diff_x);
         fprintf (script, "set yrange [%g : %g]\n", min_y - 0.1 * diff_y, max_y + 0.1 * diff_y);

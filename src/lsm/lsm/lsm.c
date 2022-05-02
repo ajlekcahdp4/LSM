@@ -104,7 +104,7 @@ char *ChangeExtenshion (char *filename, char *new_extension)   // don't free old
         newname[i] = c;
         i++;
     }
-    if ( c == old_len )
+    if ( i == old_len )
         newname[i] = '.';
     strcat (newname, new_extension);
 
@@ -191,7 +191,7 @@ struct lsm_t *LinearCalc (struct input *INP)
 
     LINE->b = Get_b (LINE->x, LINE->y, LINE->N);
 
-    if ( LINE->b < 0.01 * _min (LINE->x, LINE->N) )
+    if ( fabs(LINE->b) < 1e-3 * _min (LINE->y, LINE->N) )
     {
         LINE->b  = (double)0;
         LINE->a  = Get_a_dp (LINE->x, LINE->y, LINE->N);
