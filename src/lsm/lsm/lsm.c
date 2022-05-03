@@ -16,9 +16,9 @@ double Get_b (double *x, double *y, int N);
 double Get_ad (double *x, double *y, int N);
 double Get_bd (double *x, double *y, int N);
 
-void LsmPrint (struct lsm_t *LINE, char *outname);
-void PolinomLsmPrint (struct lsm_t *POL, char *outname);
-void ExpLsmPrint (struct lsm_t *EXP, char *outname);
+int LsmPrint (struct lsm_t *LINE, char *outname);
+int PolinomLsmPrint (struct lsm_t *POL, char *outname);
+int ExpLsmPrint (struct lsm_t *EXP, char *outname);
 
 //==================================================================================================
 //=============================================INPUT================================================
@@ -210,6 +210,7 @@ struct lsm_t *LinearCalc (struct input *INP)
 
 int LinearLsmCalc (char *inputname, char *outname, char *xlabel, char *ylabel, enum format fmt)
 {
+    int res = 0;
     struct input *INP = Input (inputname);
     if ( INP == NULL )
         return ERROR_INPUT_FILE_DOES_NOT_EXISTS;
@@ -217,7 +218,14 @@ int LinearLsmCalc (char *inputname, char *outname, char *xlabel, char *ylabel, e
     struct lsm_t *LINE = LinearCalc (INP);
     free (INP);
 
-    LsmPrint (LINE, outname);
+    res = LsmPrint (LINE, outname);
+    if (res != 0)
+    {
+        free (LINE->x);
+        free (LINE->y);
+        free (LINE);
+        return res;
+    }
 
     struct output_inf *out = SetOutputInf (outname, xlabel, ylabel, fmt);
 
@@ -259,6 +267,7 @@ struct lsm_t *PolinomCalc (struct input *INP, size_t deg)
 
 int PolinomLsmCalc (int deg, char *inputname, char *outname, char *xlabel, char *ylabel, enum format fmt)
 {
+    int res = 0;
     struct input *INP = Input (inputname);
 
     if ( INP == NULL )
@@ -267,7 +276,15 @@ int PolinomLsmCalc (int deg, char *inputname, char *outname, char *xlabel, char 
     struct lsm_t *POL = PolinomCalc (INP, deg);
     free (INP);
 
-    PolinomLsmPrint (POL, outname);
+    res = PolinomLsmPrint (POL, outname);
+    if (res != 0)
+    {
+        free (POL->x);
+        free (POL->y);
+        free (POL->array_coef);
+        free (POL);
+        return res;
+    }
 
     struct output_inf *out = SetOutputInf (outname, xlabel, ylabel, fmt);
 
@@ -326,6 +343,7 @@ struct lsm_t *ExpCalc (struct input *INP)
 
 int ExpLsmCalc (char *inputname, char *outname, char *xlabel, char *ylabel, enum format fmt)
 {
+    int res = 0;
     struct input *INP = Input (inputname);
     if ( INP == NULL )
         return ERROR_INPUT_FILE_DOES_NOT_EXISTS;
@@ -334,7 +352,14 @@ int ExpLsmCalc (char *inputname, char *outname, char *xlabel, char *ylabel, enum
     free (INP);
     free (INP->y);
 
-    ExpLsmPrint (EXP, outname);
+    res = ExpLsmPrint (EXP, outname);
+    if (res != 0)
+    {
+        free (EXP->x);
+        free (EXP->y);
+        free (EXP);
+        return res;
+    }
 
     struct output_inf *out = SetOutputInf (outname, xlabel, ylabel, fmt);
 
@@ -356,10 +381,14 @@ int ExpLsmCalc (char *inputname, char *outname, char *xlabel, char *ylabel, enum
 //==================================================================================================
 #define COMMON_ACCURACY ((double)1e-3)
 
-void LsmPrint (struct lsm_t *LINE, char *outname)
+int LsmPrint (struct lsm_t *LINE, char *outname)
 {
     FILE *out = fopen (outname, "w");
-
+    if (out == NULL)
+    {
+        fprintf (stderr, "ERROR: wrong path or name for output file. aborted.\n");
+        return ERROR_WRONG_PATH_OR_NAME_FOR_OUTPUT_FILE;
+    }
     fprintf (out, "Number of measurements: ");
     fprintf (out, "%d\n\n", LINE->N);
 
@@ -378,13 +407,20 @@ void LsmPrint (struct lsm_t *LINE, char *outname)
     fprintf (out, "b_dev = %g\n", LINE->bd);
 
     fclose (out);
+    return 0;
 }
 
 //==================================================================================================
 
-void PolinomLsmPrint (struct lsm_t *POL, char *outname)
+int PolinomLsmPrint (struct lsm_t *POL, char *outname)
 {
     FILE *out = fopen (outname, "w");
+    if (out == NULL)
+    {
+        fprintf (stderr, "ERROR: wrong path or name for output file. aborted.\n");
+        return ERROR_WRONG_PATH_OR_NAME_FOR_OUTPUT_FILE;
+    }
+
     fprintf (out, "Number of measurements: %d\n\n", POL->N);
 
     fprintf (out, "Measured values:\n");
@@ -400,13 +436,19 @@ void PolinomLsmPrint (struct lsm_t *POL, char *outname)
     fprintf (out, "\n");
 
     fclose (out);
+    return 0;
 }
 
 //==================================================================================================
 
-void ExpLsmPrint (struct lsm_t *EXP, char *outname)
+int ExpLsmPrint (struct lsm_t *EXP, char *outname)
 {
     FILE *out = fopen (outname, "w");
+    if (out == NULL)
+    {
+        fprintf (stderr, "ERROR: wrong path or name for output file. aborted.\n");
+        return ERROR_WRONG_PATH_OR_NAME_FOR_OUTPUT_FILE;
+    }
 
     fprintf (out, "Number of measurements: %d\n\n", EXP->N);
 
@@ -426,5 +468,7 @@ void ExpLsmPrint (struct lsm_t *EXP, char *outname)
     fprintf (out, "b_dev = %.g\n", EXP->bd);
 
     fclose (out);
+
+    return 0;
 }
 #undef MAX_STR_SIZE

@@ -38,7 +38,8 @@ enum format
 enum ERRORS
 {
     NO_ERROR,
-    ERROR_INPUT_FILE_DOES_NOT_EXISTS
+    ERROR_INPUT_FILE_DOES_NOT_EXISTS,
+    ERROR_WRONG_PATH_OR_NAME_FOR_OUTPUT_FILE
 };
 
 int LinearLsmCalc (char *inputname, char *outname, char *xlabel, char *ylabel, enum format fmt);

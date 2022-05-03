@@ -14,6 +14,13 @@ void ClearInputBuffer ()
     }
 }
 
+
+void ClearBuffer (char *buf, size_t size)
+{
+    for (size_t i = 0; i < size; i++)
+        buf[i] = '\0';
+}
+
 int ReadWord (char *buf)
 {
     int i  = 0;
@@ -35,8 +42,9 @@ int ReadWord (char *buf)
 
 int main ()
 {
-    int res      = 0;
+    int res      = 1;
     int calc_res = 0;
+    enum format FMT = 0;
     char *answ   = calloc (MAX_ANSWER_SIZE, sizeof (char));
     char *input  = calloc (MAX_ANSWER_SIZE, sizeof (char));
     char *output = calloc (MAX_ANSWER_SIZE, sizeof (char));
@@ -44,7 +52,7 @@ int main ()
     char *ylabel = calloc (MAX_ANSWER_SIZE, sizeof (char));
     char *fmt    = calloc (16, sizeof (char));
     printf ("What approximation do you want to use?\n");
-    while ( res != 1 )
+    while ( res != 0 )
     {
         printf ("Please, Answer \'l\' - linear, \'e\' - exponential or \'p\' - polinomial\n");
         scanf ("%s", answ);
@@ -63,20 +71,28 @@ int main ()
             ReadWord (ylabel);
 
             printf ("Enter the format of picture output\n");
-
-            while ( res != 1 || calc_res != 0 )
+            res = 1;
+            while ( res != 0 )
             {
                 printf ("Please, choose \"png\" or \"ps\" (postscript): ");
+                ClearBuffer(fmt, 16);
                 ReadWord (fmt);
-                res = 1;
-                if ( strcmp (fmt, "png") == 0 )
-                    calc_res = LinearLsmCalc (input, output, xlabel, ylabel, PNG);
-                else if ( strcmp (fmt, "ps") == 0 )
-                    calc_res = LinearLsmCalc (input, output, xlabel, ylabel, PS);
-                else
+
+                if (strcmp (fmt, "png") == 0)
+                {
                     res = 0;
+                    FMT = PNG;
+                }
+                else if (strcmp(fmt, "ps") == 0)
+                {
+                    res = 0;
+                    FMT = PS;
+                } 
+                ClearBuffer(fmt, 16);
             }
-            res = 1;
+            calc_res = LinearLsmCalc (input, output, xlabel, ylabel, FMT);
+            if (calc_res != 0)
+                goto free_end_exit;
         }
         else if ( strcmp (answ, "e") == 0 )
         {
@@ -92,29 +108,43 @@ int main ()
             ReadWord (ylabel);
             //----------------fmt---------------------------
             printf ("Enter the format of picture output\n");
-            while ( res != 1 || calc_res != 0 )
+            res = 1;
+            while ( res != 0 )
             {
                 printf ("Please, choose \"png\" or \"ps\" (postscript): ");
+                ClearBuffer(fmt, 16);
                 ReadWord (fmt);
-                res = 1;
-                if ( strcmp (fmt, "png") == 0 )
-                    calc_res = ExpLsmCalc (input, output, xlabel, ylabel, PNG);
-                else if ( strcmp (fmt, "ps") == 0 )
-                    calc_res = ExpLsmCalc (input, output, xlabel, ylabel, PS);
-                else
+
+                if (strcmp (fmt, "png") == 0)
+                {
                     res = 0;
+                    FMT = PNG;
+                }
+                else if (strcmp(fmt, "ps") == 0)
+                {
+                    res = 0;
+                    FMT = PS;
+                } 
             }
-            res = 1;
+            calc_res = ExpLsmCalc (input, output, xlabel, ylabel, FMT);
+            if (calc_res != 0)
+                goto free_end_exit;
         }
         else if ( strcmp (answ, "p") == 0 )
         {
             size_t deg = 0;
-            while ( res != 1 )
+            res = 1;
+            while ( res != 0 )
             {
-                printf ("What degree of polinom do you want?: ");
+                printf ("What degree of polinom do you want to be used?: ");
                 res = scanf ("%lu", &deg);
                 if ( res == 0 )
+                {
                     printf ("Please, enter the positive integer number\n");
+                    res = 1;
+                }
+                else
+                    res = 0;
                 ClearInputBuffer ();
             }
             printf ("Enter input file name: ");
@@ -128,29 +158,37 @@ int main ()
             printf ("Enter the name of the ordinate axis: ");
             ReadWord (ylabel);
             printf ("Enter the format of picture output\n");
-            res = 0;
-            while ( res != 1 || calc_res != 0 )
+            res = 1;
+            while ( res != 0 )
             {
                 printf ("Please, choose \"png\" or \"ps\" (postscript): ");
+                ClearBuffer(fmt, 16);
                 ReadWord (fmt);
-                res = 1;
-                if ( strcmp (fmt, "png") == 0 )
-                    calc_res = PolinomLsmCalc (deg, input, output, xlabel, ylabel, PNG);
-                else if ( strcmp (fmt, "ps") == 0 )
-                    calc_res = PolinomLsmCalc (deg, input, output, xlabel, ylabel, PS);
-                else
+
+                if (strcmp (fmt, "png") == 0)
+                {
                     res = 0;
+                    FMT = PNG;
+                }
+                else if (strcmp(fmt, "ps") == 0)
+                {
+                    res = 0;
+                    FMT = PS;
+                } 
             }
-            res = 1;
+            calc_res = PolinomLsmCalc (deg, input, output, xlabel, ylabel, FMT);
+            if (calc_res != 0)
+                goto free_end_exit;
         }
         else
         {
-            res = 0;
+            res = 1;
             ClearInputBuffer ();
         }
     }
-    free (fmt);   // dfgdfg
-    free (xlabel);   // dfgdfgdfg
+free_end_exit:
+    free (fmt); 
+    free (xlabel);
     free (ylabel);
     free (answ);
     free (input);
